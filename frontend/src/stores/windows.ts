@@ -160,8 +160,6 @@ export const useWindowsStore = defineStore('windows', () => {
     }
 
     function minimizeWindow(id: string, restoreFunction: () => void) {
-      console.log(`minimize ${id}`)
-
       const w = windowList.value.find((item) => {
         return item.id === id
       })
@@ -172,7 +170,6 @@ export const useWindowsStore = defineStore('windows', () => {
     }
 
     function restoreWindow(id: string) {
-      console.log(`restore ${id}`)
       restoreFunctionMap[id]()
       minimizedApps.value = minimizedApps.value.filter((item) => {
         return item.id !== id

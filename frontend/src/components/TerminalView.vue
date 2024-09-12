@@ -154,7 +154,6 @@ const initSocket = () => {
     'focus',
     () => {
       if (term) {
-        console.log('聚焦')
         term.focus()
       }
     }
