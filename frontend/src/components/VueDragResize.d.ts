@@ -14,6 +14,8 @@ declare module '@/components/VueDragResize.vue' {
     isDraggable: boolean
     stickSize: number
     sticks: string[]
+    parentLimitation: boolean
+    resizing: Function
   }, {}, any>
 
   export default component

@@ -15,6 +15,7 @@
       :isActive="true"
       :isResizable="true"
       :isDraggable="isDraggable"
+      :parentLimitation="true"
       :stickSize="4"
       :sticks="['br', 'tr', 'bl', 'tl']"
       @resizing="onResizing"

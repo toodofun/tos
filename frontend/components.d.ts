@@ -28,6 +28,7 @@ declare module 'vue' {
     AUpload: typeof import('@arco-design/web-vue')['Upload']
     ControlCenter: typeof import('./src/components/operating-system/components/ControlCenter.vue')['default']
     DateTime: typeof import('./src/components/operating-system/components/DateTime.vue')['default']
+    DesktopMain: typeof import('./src/components/operating-system/components/DesktopMain.vue')['default']
     DesktopView: typeof import('./src/components/operating-system/DesktopView.vue')['default']
     DockView: typeof import('./src/components/operating-system/DockView.vue')['default']
     DynamicBackground: typeof import('./src/components/operating-system/components/DynamicBackground.vue')['default']
