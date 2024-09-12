@@ -1,0 +1,5 @@
+.idea
+bin
+coverage.out
+server/static
+**/.DS_Store

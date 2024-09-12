@@ -1,0 +1,20 @@
+@import url('//at.alicdn.com/t/c/font_4674115_ad3o38klavu.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .scrollbar-hidden {
+        /* 隐藏滚动条 - Webkit (Chrome, Safari, Edge) */
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* 隐藏滚动条 - Firefox */
+        -ms-overflow-style: none; /* IE 10+ */
+        scrollbar-width: none; /* Firefox */
+    }
+}
+
