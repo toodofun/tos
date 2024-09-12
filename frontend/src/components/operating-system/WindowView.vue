@@ -63,6 +63,7 @@ import gsap from 'gsap'
 import VueDragResize from '@/components/VueDragResize.vue'
 import IconView from '@/components/operating-system/IconView.vue'
 import DynamicBackground from '@/components/operating-system/components/DynamicBackground.vue'
+import eventBus from '@/plugins/eventBus'
 
 const windowsStore = useWindowsStore()
 
@@ -132,6 +133,9 @@ const toggleFullscreen = () => {
     td.style.height = ''
     td.style.zIndex = '10'
   }
+  nextTick(() => {
+    eventBus.emit('terminal-resize')
+  })
 }
 
 const enableDraggable = () => {
@@ -160,6 +164,9 @@ const toggleMinimize = () => {
       height.value = preState.value.h as number
       x.value = preState.value.x as number
       y.value = preState.value.y as number
+    })
+    nextTick(() => {
+      eventBus.emit('terminal-resize')
     })
   }
 }

@@ -7,8 +7,14 @@ import { SerializeAddon } from 'xterm-addon-serialize'
 import { Unicode11Addon } from 'xterm-addon-unicode11'
 import { WebLinksAddon } from 'xterm-addon-web-links'
 import { Notification } from '@arco-design/web-vue'
-import { onMounted, onUnmounted, ref, watchEffect } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import eventBus from '@/plugins/eventBus'
+
+eventBus.on('terminal-resize', () => {
+  fitAddon.fit()
+  resizeTerm()
+})
 
 let terminalRef = ref(null)
 const loading = ref(true)
@@ -27,7 +33,7 @@ const props = defineProps({
 
 const term = new Terminal({
   theme: {
-    background: "#1d2434"
+    background: '#1d2434'
   },
   screenKeys: true,
   rendererType: 'canvas',
@@ -110,7 +116,7 @@ const initSocket = () => {
   ws.onclose = () => {
     if (!actively.value) {
       // router.go(-1)
-      props.exit? props.exit() : () => {
+      props.exit ? props.exit() : () => {
         window.opener = null
         window.open('', '_self')
         window.close()
@@ -129,7 +135,7 @@ const initSocket = () => {
     console.log('socket err: ', err)
     Notification.error({
       title: '连接出错',
-      content: '请检查连接信息是否正确或联系管理员',
+      content: '请检查连接信息是否正确或联系管理员'
     })
     ws.destroy()
     initSocket()
@@ -148,19 +154,20 @@ const initSocket = () => {
     'focus',
     () => {
       if (term) {
-        console.log("聚焦")
+        console.log('聚焦')
         term.focus()
       }
     }
   )
 }
-const interval = ref(null)
+// const interval = ref(null)
 onMounted(() => {
   initSocket()
   // FIXME: 很丑陋的循环聚焦，有待优化
-  // interval.value = setInterval(()=>{
+  // interval.value = setInterval(() => {
   //   if (term) {
-  //     term.focus()
+  //     fitAddon.fit()
+  //     resizeTerm()
   //   }
   // }, 100)
 })
