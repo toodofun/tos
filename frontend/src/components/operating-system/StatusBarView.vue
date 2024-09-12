@@ -3,18 +3,14 @@ import DateTime from './components/DateTime.vue'
 import { useDesktopStore } from '@/stores/desktop'
 import ControlCenter from '@/components/operating-system/components/ControlCenter.vue'
 import TaskCenter from '@/components/operating-system/components/TaskCenter.vue'
-import { BroadcastChannel } from 'broadcast-channel'
 
-const channel = new BroadcastChannel('finder')
 const desktopStore = useDesktopStore()
 </script>
 
 <template>
   <div
     class="absolute z-[50] top-0 left-0 right-0 h-8 bg-white/20 p-1 px-4 backdrop-blur-sm text-white flex items-center justify-between text-sm select-none">
-    <div class="font-bold" @click="()=>{
-      channel.postMessage('minimize')
-    }">Toodo Cloud OS
+    <div class="font-bold">Toodo Cloud OS
     </div>
     <div class="flex items-center flex-nowrap gap-2">
       <!--网速插件-->
@@ -25,7 +21,7 @@ const desktopStore = useDesktopStore()
       <!--任务中心-->
       <TaskCenter />
       <!--控制中心-->
-      <ControlCenter />
+      <!--<ControlCenter />-->
       <!--时间插件-->
       <DateTime :show-seconds="desktopStore.statusBarShowSeconds" />
     </div>
