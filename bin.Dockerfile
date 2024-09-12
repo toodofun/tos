@@ -16,7 +16,7 @@ FROM golang:1.23.0-alpine3.20 AS go-builder
 WORKDIR /build
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
-    apk add --no-cache ca-certificates make git && \
+    apk add --no-cache ca-certificates make git zip && \
     go env -w GOPROXY=https://goproxy.cn,direct
 
 COPY server/Makefile server/go.mod server/go.sum ./
@@ -27,7 +27,8 @@ COPY server .
 COPY VERSION /
 COPY --from=node-builder /build/dist ./server/static
 
-RUN make deps && make all
+ARG COMMIT_ID
+RUN make deps && make all COMMIT=${COMMIT_ID} 
 
 FROM scratch
 COPY --from=go-builder /build/bin /
