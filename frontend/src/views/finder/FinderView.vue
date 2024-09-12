@@ -38,7 +38,6 @@ const files = ref<FileInfo[]>([])
 const loading = ref(false)
 const currentPath = ref('/')
 const selectedInfo = ref<FileInfo[]>([])
-const filepathRef = ref()
 const pathHistory = ref<string[]>([currentPath.value])
 const currentIndex = ref(0)
 
@@ -69,12 +68,7 @@ const getData = async (useLoading: boolean = true) => {
       if (useLoading) {
         loading.value = false
       }
-      filepathRef.value.blur()
     })
-}
-
-const onChangeFilepath = (path: string): void => {
-  currentPath.value = path
 }
 
 const goToPath = (path: string) => {
@@ -207,11 +201,11 @@ init()
             </a-button>
           </a-button-group>
           <a-breadcrumb :style="{width:'100%', background: '#f0f1f3'}" :max-count="3">
-            <a-breadcrumb-item @click="goToPath('/')">
+            <a-breadcrumb-item @click="goToPath('/')" class="cursor-pointer">
               <icon-home />
             </a-breadcrumb-item>
             <a-breadcrumb-item
-              v-for="item in currentPath.split('/').filter(item => item.trim() !== '')"
+              v-for="item in currentPath.split('/').filter(i => i.trim() !== '')"
               class="cursor-pointer"
               :key="item"
               @click="() => {
