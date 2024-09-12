@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount, h, type VNode } from 'vue'
 import { useWindowsStore } from '@/stores/windows'
 import DesktopIcon from '@/components/operating-system/components/DesktopIcon.vue'
 import { GridLayout, GridItem, type Layout, type LayoutItem } from 'vue3-draggable-grid'
 import 'vue3-draggable-grid/dist/style.css'
+import CalendarWidget from '@/components/operating-system/components/CalendarWidget.vue'
 
 const windowsStore = useWindowsStore()
 
@@ -17,10 +18,28 @@ const rowH = ref(100)
 
 const layout = ref<Layout>([])
 
+const getItem = (id: string): VNode => {
+  if (id.startsWith('widget://')) {
+    return h(CalendarWidget)
+  }
+  return h(DesktopIcon, {
+    app: windowsStore.desktopApps[Number(id)],
+    onClick: () => windowsStore.openWindow(windowsStore.desktopApps[Number(id)])
+  })
+}
+
 const calculateGridSize = () => {
-  col.value = Math.floor((gridContainer.value.clientWidth - padding.value * 2 + gutter.value) / (100 + gutter.value))
-  row.value = Math.floor((gridContainer.value.clientHeight - padding.value * 2 + gutter.value) / (100 + gutter.value))
+  col.value = Math.floor((gridContainer.value.clientWidth - padding.value * 2 + gutter.value) / (rowH.value + gutter.value))
+  row.value = Math.floor((gridContainer.value.clientHeight - padding.value * 2 + gutter.value) / (rowH.value + gutter.value))
   layout.value = []
+
+  layout.value.push({
+    x: 1,
+    y: 1,
+    h: 2,
+    w: 3,
+    id: 'widget://test'
+  })
 
   windowsStore.desktopApps.forEach((item, index) => {
     // 计算当前元素的列号（从右往左）
@@ -83,8 +102,7 @@ const remove = (id: string) => {
       :row-h="rowH"
     >
       <grid-item v-for="item in layout" :key="item.id" :id="item.id">
-        <DesktopIcon :app="windowsStore.desktopApps[Number(item.id)]"
-                     @click="windowsStore.openWindow(windowsStore.desktopApps[Number(item.id)])" />
+        <component :is="getItem(item.id)" />
       </grid-item>
     </grid-layout>
   </div>

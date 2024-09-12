@@ -26,6 +26,8 @@ declare module 'vue' {
     AProgress: typeof import('@arco-design/web-vue')['Progress']
     ATable: typeof import('@arco-design/web-vue')['Table']
     AUpload: typeof import('@arco-design/web-vue')['Upload']
+    CalendarWidget: typeof import('./src/components/operating-system/components/CalendarWidget.vue')['default']
+    CalenderWidge: typeof import('./src/components/operating-system/components/CalenderWidge.vue')['default']
     ControlCenter: typeof import('./src/components/operating-system/components/ControlCenter.vue')['default']
     DateTime: typeof import('./src/components/operating-system/components/DateTime.vue')['default']
     DesktopIcon: typeof import('./src/components/operating-system/components/DesktopIcon.vue')['default']

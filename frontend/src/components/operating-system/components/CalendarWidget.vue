@@ -5,7 +5,6 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import axios from '@/utils/request'
 import { getHolidayDetail, type HolidayDetail } from '@/utils/getHolidayDetail'
-import CalendarWidget from '@/components/operating-system/components/CalendarWidget.vue'
 
 dayjs.locale('zh-cn')
 
@@ -41,17 +40,26 @@ useTimer(async () => {
 </script>
 
 <template>
-  <a-popover trigger="click"
-             position="tl"
-             :content-style="{background: 'rgba(255,255,255,0)', padding: '0.5rem', border: 'none', marginRight: '0.6rem', boxShadow: 'none'}"
-             :arrow-style="{display: 'none'}">
-    <div class="tabular-nums cursor-pointer select-none text-nowrap">{{ currentTime }}</div>
-    <template #content>
-      <div class="flex flex-col gap-4">
-        <CalendarWidget />
+  <div class="w-full h-full select-none bg-white p-4 rounded-lg flex gap-0 flex-nowrap min-w-64 shadow-lg overflow-hidden">
+    <div class="flex flex-col flex-1 gap-4">
+      <div class="flex items-center gap-0">
+        <div class="text-5xl font-bold">{{ dayjs().format('D') }}</div>
+        <div class="w-[1px] bg-slate-500 h-6 ml-2 mr-1"></div>
+        <div class="writing-vertical-lr select-none font-bold">{{ dayjs().format('ddd') }}</div>
       </div>
-    </template>
-  </a-popover>
+      <div class="h-full w-full flex items-center justify-start">无事项</div>
+    </div>
+    <div class="flex flex-col gap-2 flex-1">
+      <div class="flex flex-col gap-1" v-for="(item, index) in next7DaysEvent" :key="index">
+        <div class="text-xs font-bold text-nowrap">{{ item.date.format('M月D日 dddd') }}</div>
+        <div class="text-xs font-bold text-nowrap flex gap-1 items-center" v-for="(tag, index) in item.tags"
+             :key="index">
+          <div class="w-[0.3rem] h-4 rounded-full" :class="tag.color"></div>
+          <div>{{ tag.name }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
