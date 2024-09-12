@@ -8,17 +8,10 @@ import { Unicode11Addon } from 'xterm-addon-unicode11'
 import { WebLinksAddon } from 'xterm-addon-web-links'
 import { Notification } from '@arco-design/web-vue'
 import { onMounted, onUnmounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
 import eventBus from '@/plugins/eventBus'
-
-eventBus.on('terminal-resize', () => {
-  fitAddon.fit()
-  resizeTerm()
-})
 
 let terminalRef = ref(null)
 const loading = ref(true)
-const router = useRouter()
 
 const actively = ref(false)
 
@@ -162,6 +155,12 @@ const initSocket = () => {
 // const interval = ref(null)
 onMounted(() => {
   initSocket()
+  eventBus.on('terminal-resize', () => {
+    try {
+      fitAddon.fit()
+      resizeTerm()
+    } catch (e) { /* empty */ }
+  })
   // FIXME: 很丑陋的循环聚焦，有待优化
   // interval.value = setInterval(() => {
   //   if (term) {
@@ -176,6 +175,7 @@ onUnmounted(() => {
   if (ws) {
     ws.close()
   }
+  eventBus.off('terminal-resize')
   // clearInterval(interval.value)
 
   term.dispose()
