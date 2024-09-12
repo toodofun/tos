@@ -51,6 +51,7 @@ declare module 'vue' {
     IconSupport: typeof import('./src/components/icons/IconSupport.vue')['default']
     IconTooling: typeof import('./src/components/icons/IconTooling.vue')['default']
     IconView: typeof import('./src/components/operating-system/IconView.vue')['default']
+    LaunchpadView: typeof import('./src/components/operating-system/LaunchpadView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StatusBarView: typeof import('./src/components/operating-system/StatusBarView.vue')['default']

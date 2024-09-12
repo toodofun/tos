@@ -30,6 +30,7 @@ export interface CreateNewWindowInfo {
   y?: number
   theme?: 'light' | 'dark'
   background?: string
+  singleton?: boolean
 }
 
 const internalApps: { [key: string]: VNode } = {
@@ -67,7 +68,7 @@ export const useWindowsStore = defineStore('windows', () => {
       {
         icon: 'internal://icon-app',
         title: '启动台',
-        page: '//docker.ac.cn',
+        page: 'system://launchpad',
         background: 'linear-gradient(to right, #4e54c8, #8f94fb)'
       },
       {
@@ -80,7 +81,8 @@ export const useWindowsStore = defineStore('windows', () => {
         icon: 'internal://icon-setting',
         title: '设置',
         page: 'internal://setting',
-        background: 'linear-gradient(to right, #536976, #292e49)'
+        background: 'linear-gradient(to right, #536976, #292e49)',
+        singleton: true
       },
       { icon: 'internal://icon-task', title: '任务管理', page: '//toodo.fun' },
       { icon: 'internal://icon-terminal', title: '终端', page: 'internal://terminal', theme: 'dark' }
@@ -126,7 +128,8 @@ export const useWindowsStore = defineStore('windows', () => {
         icon: 'internal://icon-setting',
         title: '设置',
         page: 'internal://setting',
-        background: 'linear-gradient(to right, #536976, #292e49)'
+        background: 'linear-gradient(to right, #536976, #292e49)',
+        singleton: true
       }
       // { icon: 'internal://icon-container', title: '容器管理', page: '//toodo.fun' },
       // { icon: 'internal://icon-cluster', title: '集群管理', page: '//toodo.fun', theme: 'dark' },
@@ -138,6 +141,15 @@ export const useWindowsStore = defineStore('windows', () => {
     }
 
     function openWindow(w: CreateNewWindowInfo) {
+      if (w.singleton) {
+        const index = windowList.value.findIndex((item) => {
+          return item.page === w.page
+        })
+        if (index > -1) {
+          clickWindow(windowList.value[index])
+          return
+        }
+      }
       maxZ.value += 1
       windowList.value.push({
         id: uuidv4(),

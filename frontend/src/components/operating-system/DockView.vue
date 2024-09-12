@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useWindowsStore } from '@/stores/windows'
+import { type CreateNewWindowInfo, useWindowsStore } from '@/stores/windows'
 import IconView from '@/components/operating-system/IconView.vue'
 import DynamicBackground from '@/components/operating-system/components/DynamicBackground.vue'
+import LaunchpadView from '@/components/operating-system/LaunchpadView.vue'
 
 const windowsStore = useWindowsStore()
 
 const activeIndex = ref(-1)
+const showLaunchpad = ref(false)
 
 const getScale = (index: number) => {
   const distance = Math.abs(index - activeIndex.value)
@@ -16,9 +18,24 @@ const getScale = (index: number) => {
   return 1
 }
 
+const openWindow = (app: CreateNewWindowInfo) => {
+  if (app.page === 'system://launchpad') {
+    showLaunchpad.value = !showLaunchpad.value
+    return
+  }
+  showLaunchpad.value = false
+  windowsStore.openWindow(app)
+  activeIndex.value = -1
+}
+
 </script>
 
 <template>
+  <transition name="fade">
+    <div v-if="showLaunchpad" class="absolute inset-0 z-[999]">
+      <LaunchpadView :on-close="() => showLaunchpad = false" :on-open-window="openWindow"/>
+    </div>
+  </transition>
   <div
     class="absolute z-[50] bottom-2 left-0 right-0 mx-auto w-fit bg-white/20 backdrop-blur-sm rounded-xl p-2 shadow-lg">
     <div class="flex items-end gap-4">
@@ -28,7 +45,7 @@ const getScale = (index: number) => {
         class="group relative flex flex-col items-center justify-center transition-all duration-300 ease-in-out"
         @mousemove="activeIndex = index"
         @mouseleave="activeIndex = -1"
-        @click="() => {windowsStore.openWindow(item); activeIndex = -1}"
+        @click="openWindow(item)"
         :style="{zIndex: getScale(index) + 1}"
       >
         <DynamicBackground
@@ -52,7 +69,7 @@ const getScale = (index: number) => {
         v-for="(item, index) in windowsStore.minimizedApps"
         :key="index+windowsStore.fixedApps.length"
         class="group relative flex flex-col items-center justify-center transition-all duration-300 ease-in-out rounded-lg shadow shadow-cyan-400"
-        @mousemove="activeIndex = index+windowsStore.fixedApps.length"
+        @mousemove="activeIndex = index + windowsStore.fixedApps.length"
         @mouseleave="activeIndex = -1"
         @click="() => {windowsStore.restoreWindow(item.id); activeIndex = -1}"
       >
@@ -105,5 +122,12 @@ const getScale = (index: number) => {
 
 .flex:hover .group:hover ~ .group {
   transform: translateY(-5px);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease-in;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0;
 }
 </style>
