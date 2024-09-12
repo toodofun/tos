@@ -19,7 +19,8 @@ export interface WindowInfo {
   background: string
 }
 
-interface CreateNewWindowInfo {
+export interface CreateNewWindowInfo {
+  id?: string
   title: string
   icon: string
   page: string

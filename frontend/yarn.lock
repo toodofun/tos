@@ -910,6 +910,17 @@
     estree-walker "^2.0.2"
     source-map-js "^1.2.0"
 
+"@vue/compiler-core@3.5.4":
+  version "3.5.4"
+  resolved "https://registry.npmmirror.com/@vue/compiler-core/-/compiler-core-3.5.4.tgz#b8b5805e767b94d84af01f5527dbb4896326c478"
+  integrity sha512-oNwn+BAt3n9dK9uAYvI+XGlutwuTq/wfj4xCBaZCqwwVIGtD7D6ViihEbyYZrDHIHTDE3Q6oL3/hqmAyFEy9DQ==
+  dependencies:
+    "@babel/parser" "^7.25.3"
+    "@vue/shared" "3.5.4"
+    entities "^4.5.0"
+    estree-walker "^2.0.2"
+    source-map-js "^1.2.0"
+
 "@vue/compiler-dom@3.5.0", "@vue/compiler-dom@^3.3.4", "@vue/compiler-dom@^3.4.0":
   version "3.5.0"
   resolved "https://registry.npmmirror.com/@vue/compiler-dom/-/compiler-dom-3.5.0.tgz#108ed4315968d0197277128c4e5cb689f8a1ddd6"
@@ -917,6 +928,14 @@
   dependencies:
     "@vue/compiler-core" "3.5.0"
     "@vue/shared" "3.5.0"
+
+"@vue/compiler-dom@3.5.4":
+  version "3.5.4"
+  resolved "https://registry.npmmirror.com/@vue/compiler-dom/-/compiler-dom-3.5.4.tgz#3f98e6ca76abab73630dad055b3ef6e2e6c2b006"
+  integrity sha512-yP9RRs4BDLOLfldn6ah+AGCNovGjMbL9uHvhDHf5wan4dAHLnFGOkqtfE7PPe4HTXIqE7l/NILdYw53bo1C8jw==
+  dependencies:
+    "@vue/compiler-core" "3.5.4"
+    "@vue/shared" "3.5.4"
 
 "@vue/compiler-sfc@3.5.0", "@vue/compiler-sfc@^3.4.15":
   version "3.5.0"
@@ -933,6 +952,21 @@
     postcss "^8.4.44"
     source-map-js "^1.2.0"
 
+"@vue/compiler-sfc@3.5.4":
+  version "3.5.4"
+  resolved "https://registry.npmmirror.com/@vue/compiler-sfc/-/compiler-sfc-3.5.4.tgz#a530accc9afed38506b14ce7ac6fb237eb09ff2d"
+  integrity sha512-P+yiPhL+NYH7m0ZgCq7AQR2q7OIE+mpAEgtkqEeH9oHSdIRvUO+4X6MPvblJIWcoe4YC5a2Gdf/RsoyP8FFiPQ==
+  dependencies:
+    "@babel/parser" "^7.25.3"
+    "@vue/compiler-core" "3.5.4"
+    "@vue/compiler-dom" "3.5.4"
+    "@vue/compiler-ssr" "3.5.4"
+    "@vue/shared" "3.5.4"
+    estree-walker "^2.0.2"
+    magic-string "^0.30.11"
+    postcss "^8.4.44"
+    source-map-js "^1.2.0"
+
 "@vue/compiler-ssr@3.5.0":
   version "3.5.0"
   resolved "https://registry.npmmirror.com/@vue/compiler-ssr/-/compiler-ssr-3.5.0.tgz#b9d31cf32b748fc4e554996c99988cb920c2458b"
@@ -940,6 +974,14 @@
   dependencies:
     "@vue/compiler-dom" "3.5.0"
     "@vue/shared" "3.5.0"
+
+"@vue/compiler-ssr@3.5.4":
+  version "3.5.4"
+  resolved "https://registry.npmmirror.com/@vue/compiler-ssr/-/compiler-ssr-3.5.4.tgz#b6d011adaca367e7cc364cb09dfb6a5c12ad974a"
+  integrity sha512-acESdTXsxPnYr2C4Blv0ggx5zIFMgOzZmYU2UgvIff9POdRGbRNBHRyzHAnizcItvpgerSKQbllUc9USp3V7eg==
+  dependencies:
+    "@vue/compiler-dom" "3.5.4"
+    "@vue/shared" "3.5.4"
 
 "@vue/compiler-vue2@^2.7.16":
   version "2.7.16"
@@ -1024,6 +1066,13 @@
   dependencies:
     "@vue/shared" "3.5.0"
 
+"@vue/reactivity@3.5.4":
+  version "3.5.4"
+  resolved "https://registry.npmmirror.com/@vue/reactivity/-/reactivity-3.5.4.tgz#f1c771612e0612443583bac6ce52b8cef0ac5c40"
+  integrity sha512-HKKbEuP7tYSGCq4e4nK6ZW6l5hyG66OUetefBp4budUyjvAYsnQDf+bgFzg2RAgnH0CInyqXwD9y47jwJEHrQw==
+  dependencies:
+    "@vue/shared" "3.5.4"
+
 "@vue/runtime-core@3.5.0":
   version "3.5.0"
   resolved "https://registry.npmmirror.com/@vue/runtime-core/-/runtime-core-3.5.0.tgz#3c82f489fc9e0752823a821b06227c1f6313fe72"
@@ -1031,6 +1080,14 @@
   dependencies:
     "@vue/reactivity" "3.5.0"
     "@vue/shared" "3.5.0"
+
+"@vue/runtime-core@3.5.4":
+  version "3.5.4"
+  resolved "https://registry.npmmirror.com/@vue/runtime-core/-/runtime-core-3.5.4.tgz#411e4f6d445d44354bbc242dfb168379c3bec5c3"
+  integrity sha512-f3ek2sTA0AFu0n+w+kCtz567Euqqa3eHewvo4klwS7mWfSj/A+UmYTwsnUFo35KeyAFY60JgrCGvEBsu1n/3LA==
+  dependencies:
+    "@vue/reactivity" "3.5.4"
+    "@vue/shared" "3.5.4"
 
 "@vue/runtime-dom@3.5.0":
   version "3.5.0"
@@ -1042,6 +1099,16 @@
     "@vue/shared" "3.5.0"
     csstype "^3.1.3"
 
+"@vue/runtime-dom@3.5.4":
+  version "3.5.4"
+  resolved "https://registry.npmmirror.com/@vue/runtime-dom/-/runtime-dom-3.5.4.tgz#68242033e648a6d1400f27d923d5788362fbefb8"
+  integrity sha512-ofyc0w6rbD5KtjhP1i9hGOKdxGpvmuB1jprP7Djlj0X7R5J/oLwuNuE98GJ8WW31Hu2VxQHtk/LYTAlW8xrJdw==
+  dependencies:
+    "@vue/reactivity" "3.5.4"
+    "@vue/runtime-core" "3.5.4"
+    "@vue/shared" "3.5.4"
+    csstype "^3.1.3"
+
 "@vue/server-renderer@3.5.0":
   version "3.5.0"
   resolved "https://registry.npmmirror.com/@vue/server-renderer/-/server-renderer-3.5.0.tgz#e332480e58ec5ef6acfecfefc743b1d35ef3f1d3"
@@ -1050,10 +1117,23 @@
     "@vue/compiler-ssr" "3.5.0"
     "@vue/shared" "3.5.0"
 
+"@vue/server-renderer@3.5.4":
+  version "3.5.4"
+  resolved "https://registry.npmmirror.com/@vue/server-renderer/-/server-renderer-3.5.4.tgz#8b9a102474922156c881c8ed1442907512d5435b"
+  integrity sha512-FbjV6DJLgKRetMYFBA1UXCroCiED/Ckr53/ba9wivyd7D/Xw9fpo0T6zXzCnxQwyvkyrL7y6plgYhWhNjGxY5g==
+  dependencies:
+    "@vue/compiler-ssr" "3.5.4"
+    "@vue/shared" "3.5.4"
+
 "@vue/shared@3.5.0", "@vue/shared@^3.4.0":
   version "3.5.0"
   resolved "https://registry.npmmirror.com/@vue/shared/-/shared-3.5.0.tgz#4842753ae38bab2323c710a4aff98338f1b0a8f5"
   integrity sha512-m9IgiteBpCkFaMNwCOBkFksA7z8QiKc30ooRuoXWUFRDu0mGyNPlFHmbncF0/Kra1RlX8QrmBbRaIxVvikaR0Q==
+
+"@vue/shared@3.5.4":
+  version "3.5.4"
+  resolved "https://registry.npmmirror.com/@vue/shared/-/shared-3.5.4.tgz#d4768ddf13aded2774162298a3b5658cc999e1ee"
+  integrity sha512-L2MCDD8l7yC62Te5UUyPVpmexhL9ipVnYRw9CsWfm/BGRL5FwDX4a25bcJ/OJSD3+Hx+k/a8LDKcG2AFdJV3BA==
 
 "@vue/tsconfig@^0.5.1":
   version "0.5.1"
@@ -3531,6 +3611,13 @@ vue-tsc@^2.0.21:
     "@vue/language-core" "2.1.4"
     semver "^7.5.4"
 
+vue3-draggable-grid@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.npmmirror.com/vue3-draggable-grid/-/vue3-draggable-grid-0.0.6.tgz#4418fd8ebef67adbd19797e3ee8512ff100a4f5a"
+  integrity sha512-IV59jN6N9UXIrz7bz96vm8Hgc+euviAREJyBy0K9XR2SULG1yi4qA0XzEsSDqBqTwwOMtv9Xc6NUeXLW4PEZbA==
+  dependencies:
+    vue "^3.3.9"
+
 vue3-uuid@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmmirror.com/vue3-uuid/-/vue3-uuid-1.0.0.tgz#b76b04e81a5c99ad1153585ce84e946ea8562dd2"
@@ -3538,6 +3625,17 @@ vue3-uuid@^1.0.0:
   dependencies:
     "@types/uuid" "^8.0.0"
     uuid "^8.1.0"
+
+vue@^3.3.9:
+  version "3.5.4"
+  resolved "https://registry.npmmirror.com/vue/-/vue-3.5.4.tgz#0e5935e8b1e5505d484aee732b72c6e77c7567fd"
+  integrity sha512-3yAj2gkmiY+i7+22A1PWM+kjOVXjU74UPINcTiN7grIVPyFFI0lpGwHlV/4xydDmobaBn7/xmi+YG8HeSlCTcg==
+  dependencies:
+    "@vue/compiler-dom" "3.5.4"
+    "@vue/compiler-sfc" "3.5.4"
+    "@vue/runtime-dom" "3.5.4"
+    "@vue/server-renderer" "3.5.4"
+    "@vue/shared" "3.5.4"
 
 vue@^3.4.29:
   version "3.5.0"
