@@ -142,6 +142,13 @@ export const useWindowsStore = defineStore('windows', () => {
 
     function openWindow(w: CreateNewWindowInfo) {
       if (w.singleton) {
+        const i = minimizedApps.value.findIndex((item) => {
+          return item.page === w.page
+        })
+        if (i > -1) {
+          restoreWindow(minimizedApps.value[i].id)
+          return
+        }
         const index = windowList.value.findIndex((item) => {
           return item.page === w.page
         })
@@ -185,9 +192,16 @@ export const useWindowsStore = defineStore('windows', () => {
 
     function restoreWindow(id: string) {
       restoreFunctionMap[id]()
-      minimizedApps.value = minimizedApps.value.filter((item) => {
-        return item.id !== id
+
+      const window = minimizedApps.value.find((item) => {
+        return item.id === id
       })
+      if (window) {
+        clickWindow(window)
+        minimizedApps.value = minimizedApps.value.filter((item) => {
+          return item.id !== id
+        })
+      }
     }
 
     return {
