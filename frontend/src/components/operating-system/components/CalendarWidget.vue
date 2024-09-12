@@ -40,7 +40,8 @@ useTimer(async () => {
 </script>
 
 <template>
-  <div class="w-full h-full select-none bg-white p-4 rounded-lg flex gap-0 flex-nowrap min-w-64 shadow-lg overflow-hidden">
+  <div
+    class="w-full h-full select-none bg-white p-4 rounded-lg flex gap-0 flex-nowrap min-w-64 shadow-lg overflow-hidden">
     <div class="flex flex-col flex-1 gap-4">
       <div class="flex items-center gap-0">
         <div class="text-5xl font-bold">{{ dayjs().format('D') }}</div>
@@ -50,13 +51,18 @@ useTimer(async () => {
       <div class="h-full w-full flex items-center justify-start">无事项</div>
     </div>
     <div class="flex flex-col gap-2 flex-1">
-      <div class="flex flex-col gap-1" v-for="(item, index) in next7DaysEvent" :key="index">
-        <div class="text-xs font-bold text-nowrap">{{ item.date.format('M月D日 dddd') }}</div>
-        <div class="text-xs font-bold text-nowrap flex gap-1 items-center" v-for="(tag, index) in item.tags"
-             :key="index">
-          <div class="w-[0.3rem] h-4 rounded-full" :class="tag.color"></div>
-          <div>{{ tag.name }}</div>
+      <template v-if="next7DaysEvent.length > 0">
+        <div class="flex flex-col gap-1" v-for="(item, index) in next7DaysEvent" :key="index">
+          <div class="text-xs font-bold text-nowrap">{{ item.date.format('M月D日 dddd') }}</div>
+          <div class="text-xs font-bold text-nowrap flex gap-1 items-center" v-for="(tag, index) in item.tags"
+               :key="index">
+            <div class="w-[0.3rem] h-4 rounded-full" :class="tag.color"></div>
+            <div>{{ tag.name }}</div>
+          </div>
         </div>
+      </template>
+      <div v-else class="w-full h-full flex items-center justify-center">
+        <a-empty />
       </div>
     </div>
   </div>

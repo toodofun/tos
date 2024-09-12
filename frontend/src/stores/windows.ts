@@ -75,7 +75,8 @@ export const useWindowsStore = defineStore('windows', () => {
         icon: 'internal://icon-app-store',
         title: '应用商店',
         page: 'internal://app-store',
-        background: 'linear-gradient(to right, #06beb6, #48b1bf)'
+        background: 'linear-gradient(to right, #06beb6, #48b1bf)',
+        singleton: true
       },
       {
         icon: 'internal://icon-setting',
@@ -116,7 +117,8 @@ export const useWindowsStore = defineStore('windows', () => {
         icon: 'internal://icon-app-store',
         title: '应用商店',
         page: 'internal://app-store',
-        background: 'linear-gradient(to right, #06beb6, #48b1bf)'
+        background: 'linear-gradient(to right, #06beb6, #48b1bf)',
+        singleton: true
       },
       {
         icon: 'internal://icon-terminal',
