@@ -15,8 +15,9 @@
       :isActive="true"
       :isResizable="true"
       :isDraggable="isDraggable"
-      :stickSize="8"
+      :stickSize="4"
       :sticks="['br', 'tr', 'bl', 'tl']"
+      @resizing="onResizing"
     >
       <div class="w-full h-full rounded flex flex-col overflow-hidden" ref="targetDiv"
            :class="theme === 'light' ? 'bg-white text-black' : 'bg-slate-800 text-white'">
@@ -26,7 +27,7 @@
              @mouseleave="disableDraggable" @dblclick="toggleFullscreen">
           <div class="flex gap-1 items-center text-sm">
             <DynamicBackground :background="background" class="w-4 h-4 rounded aspect-square">
-              <IconView :src="icon as string" />
+              <IconView :src="icon as string" custom-class="text-xs" />
             </DynamicBackground>
             <div>{{ title }}</div>
           </div>
@@ -109,6 +110,10 @@ const preState = ref<{ w: number, h: number, x: number, y: number }>({
   x: 0,
   y: 0
 })
+
+const onResizing = () => {
+  eventBus.emit('terminal-resize')
+}
 
 const toggleFullscreen = () => {
   isFullscreen.value = !isFullscreen.value

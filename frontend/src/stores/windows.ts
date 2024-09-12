@@ -86,13 +86,13 @@ export const useWindowsStore = defineStore('windows', () => {
     const minimizedApps = ref<Array<WindowInfo>>([])
 
     const desktopApps = ref<Array<CreateNewWindowInfo>>([
-      // {
-      //   icon: 'https://i04piccdn.sogoucdn.com/a72804451f0e9825',
-      //   title: '原神',
-      //   width: 1280,
-      //   height: 720,
-      //   page: 'https://genshin.titlecan.cn/'
-      // },
+      {
+        icon: 'https://i04piccdn.sogoucdn.com/a72804451f0e9825',
+        title: '原神',
+        width: 1280,
+        height: 720,
+        page: 'https://genshin.titlecan.cn/'
+      },
       // {
       //   icon: 'https://hexgl.bkcore.com/play/css/title.png',
       //   title: 'HexGL赛车',
@@ -149,7 +149,7 @@ export const useWindowsStore = defineStore('windows', () => {
         z: maxZ.value,
         active: true,
         theme: w.theme || 'light',
-        background: defaultBackground
+        background: w.background || defaultBackground
       })
     }
 

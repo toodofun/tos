@@ -21,6 +21,7 @@ const windowsStore = useWindowsStore()
     :y="w.y"
     :theme="w.theme"
     :style="{zIndex: w.z}"
+    :background="w.background"
   />
 </template>
 

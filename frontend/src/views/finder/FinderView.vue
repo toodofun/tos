@@ -24,8 +24,9 @@ import ListView from '@/views/finder/components/ListView.vue'
 
 const queueStore = useQueueStore()
 
-eventBus.on('finder-refresh', (path: string) => {
-  if (path === currentPath.value) {
+eventBus.on('finder-refresh', (path) => {
+  const p = path as string
+  if (p === currentPath.value) {
     getData(false)
   }
 })
@@ -71,7 +72,7 @@ const getData = async (useLoading: boolean = true) => {
     })
 }
 
-const onChangeFilepath = (path: string, ev: Event): void => {
+const onChangeFilepath = (path: string): void => {
   currentPath.value = path
 }
 
