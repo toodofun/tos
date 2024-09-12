@@ -14,7 +14,8 @@ import {
   IconCaretDown,
   IconApps,
   IconList,
-  IconFolderAdd
+  IconFolderAdd,
+  IconHome
 } from '@arco-design/web-vue/es/icon'
 import { useQueueStore } from '@/stores/queue'
 import type { RequestOption, UploadRequest } from '@arco-design/web-vue'
@@ -205,9 +206,20 @@ init()
               <icon-refresh size="mini" :class="loading ? 'animate-spin' : ''" />
             </a-button>
           </a-button-group>
-          <a-input ref="filepathRef" :style="{width:'100%'}" :model-value="currentPath" size="small"
-                   @press-enter="goToPath(currentPath)"
-                   @input="onChangeFilepath" allow-clear />
+          <a-breadcrumb :style="{width:'100%', background: '#f0f1f3'}" :max-count="3">
+            <a-breadcrumb-item @click="goToPath('/')">
+              <icon-home />
+            </a-breadcrumb-item>
+            <a-breadcrumb-item
+              v-for="item in currentPath.split('/').filter(item => item.trim() !== '')"
+              class="cursor-pointer"
+              :key="item"
+              @click="() => {
+                goToPath(currentPath.split('/').slice(0, currentPath.split('/').indexOf(item) + 1).join('/'))
+              }"
+            >{{ item }}
+            </a-breadcrumb-item>
+          </a-breadcrumb>
           <a-button-group size="small" rounded>
             <a-dropdown :popup-max-height="false" position="bl">
               <a-button>

@@ -35,14 +35,15 @@ export interface CreateNewWindowInfo {
 const internalApps: { [key: string]: VNode } = {
   'internal://setting': h(defineAsyncComponent(() => import('@/views/setting/SettingView.vue'))),
   'internal://terminal': h(defineAsyncComponent(() => import('@/views/terminal/TerminalView.vue'))),
-  'internal://finder': h(defineAsyncComponent(() => import('@/views/finder/FinderView.vue')))
+  'internal://finder': h(defineAsyncComponent(() => import('@/views/finder/FinderView.vue'))),
+  'internal://app-store': h(defineAsyncComponent(() => import('@/views/app-store/AppStoreView.vue')))
 }
 
 export const getWindow = (src: string): VNode => {
   if (src.startsWith('internal')) {
     return internalApps[src] || h('div', 'Not Found')
   }
-  if (src.startsWith('http')) {
+  if (src.startsWith('http') || src.startsWith('//')) {
     return h('iframe', {
       src,
       class: 'w-full h-full will-change-auto',
@@ -72,7 +73,7 @@ export const useWindowsStore = defineStore('windows', () => {
       {
         icon: 'internal://icon-app-store',
         title: '应用商店',
-        page: 'internal://finder',
+        page: 'internal://app-store',
         background: 'linear-gradient(to right, #06beb6, #48b1bf)'
       },
       {
@@ -112,7 +113,7 @@ export const useWindowsStore = defineStore('windows', () => {
       {
         icon: 'internal://icon-app-store',
         title: '应用商店',
-        page: 'internal://finder',
+        page: 'internal://app-store',
         background: 'linear-gradient(to right, #06beb6, #48b1bf)'
       },
       {
