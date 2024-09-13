@@ -48,7 +48,7 @@ useTimer(async () => {
         <div class="w-[1px] bg-slate-500 h-6 ml-2 mr-1"></div>
         <div class="writing-vertical-lr select-none font-bold">{{ dayjs().format('ddd') }}</div>
       </div>
-      <div class="h-full w-full flex items-center justify-start">无事项</div>
+      <div class="h-full w-full flex items-center justify-start text-xs text-gray-500">无事项</div>
     </div>
     <div class="flex flex-col gap-2 flex-1">
       <template v-if="next7DaysEvent.length > 0">

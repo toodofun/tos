@@ -105,14 +105,14 @@ export const useWindowsStore = defineStore('windows', () => {
       //   height: 720,
       //   page: 'https://hexgl.bkcore.com/play/'
       // },
-      // {
-      //   icon: 'https://th.bing.com/th/id/OIP.nfFu7l8TPI6fnX5Fb8bJ_QHaHa?rs=1&pid=ImgDetMain',
-      //   title: '亲戚称呼计算器',
-      //   width: 338,
-      //   height: 600,
-      //   page: 'https://passer-by.com/relationship/vue/#/',
-      //   theme: 'dark'
-      // },
+      {
+        icon: 'https://th.bing.com/th/id/OIP.nfFu7l8TPI6fnX5Fb8bJ_QHaHa?rs=1&pid=ImgDetMain',
+        title: '亲戚称呼计算器',
+        width: 338,
+        height: 600,
+        page: 'https://passer-by.com/relationship/vue/#/',
+        theme: 'dark'
+      },
       {
         icon: 'internal://icon-app-store',
         title: '应用商店',

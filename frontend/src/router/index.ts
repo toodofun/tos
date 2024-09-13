@@ -17,27 +17,27 @@ const router = createRouter({
       // which is lazy-loaded when the route is visited.
       component: () => import('../views/AboutView.vue')
     },
-    // {
-    //   path: '/app',
-    //   name: 'app',
-    //   children: [
-    //     // {
-    //     //   path: 'terminal',
-    //     //   name: 'terminal',
-    //     //   component: () => import('../views/terminal/TerminalView.vue')
-    //     // },
-    //     // {
-    //     //   path: 'setting',
-    //     //   name: 'setting',
-    //     //   component: () => import('../views/setting/SettingView.vue')
-    //     // },
-    //     // {
-    //     //   path: 'finder',
-    //     //   name: 'finder',
-    //     //   component: () => import('../views/finder/FinderView.vue')
-    //     // }
-    //   ]
-    // }
+    {
+      path: '/app',
+      name: 'app',
+      children: [
+        {
+          path: 'terminal',
+          name: 'terminal',
+          component: () => import('../views/terminal/TerminalView.vue')
+        },
+        {
+          path: 'setting',
+          name: 'setting',
+          component: () => import('../views/setting/SettingView.vue')
+        },
+        {
+          path: 'finder',
+          name: 'finder',
+          component: () => import('../views/finder/FinderView.vue')
+        }
+      ]
+    }
   ]
 })
 

@@ -46,6 +46,13 @@ linux-arm64:  ## Build linux-arm64
 	tar -zcvf $(NAME)-$@.tar.gz $(NAME)
 	rm $(NAME) && mv $(NAME)-$@.tar.gz $(BINARY_DIR)
 
+.PHONY: linux-i386
+linux-i386:  ## Build linux-i386
+	GOOS=linux GOARCH=386 $(GO_BUILD) -o $(BINARY_DIR)/$(NAME)-$@
+	mv $(BINARY_DIR)/$(NAME)-$@ $(NAME)
+	tar -zcvf $(NAME)-$@.tar.gz $(NAME)
+	rm $(NAME) && mv $(NAME)-$@.tar.gz $(BINARY_DIR)
+
 .PHONY: windows-amd64
 windows-amd64:  ## Build windows-amd64
 	GOOS=windows GOARCH=amd64 $(GO_BUILD) -o $(BINARY_DIR)/$(NAME)-$@.exe
@@ -66,7 +73,7 @@ darwin-arm64:  ## Build darwin-arm64
 	rm $(NAME) && mv $(NAME)-$@.tar.gz $(BINARY_DIR)
 
 .PHONY: all
-all: linux-amd64 linux-arm64 windows-amd64 darwin-amd64 darwin-arm64  ## Build all
+all: linux-amd64 linux-arm64 windows-amd64 darwin-amd64 darwin-arm64 linux-i386  ## Build all
 
 .PHONY: clean
 clean:  ## Clean
