@@ -20,10 +20,18 @@ const sortedTasks = computed(() => {
 </script>
 
 <template>
-  <a-popover trigger="click"
-             position="tl"
-             :content-style="{background: 'rgba(255,255,255,0)', padding: '0.5rem', border: 'none', marginRight: '0.6rem', boxShadow: 'none'}"
-             :arrow-style="{display: 'none'}">
+  <a-popover
+    class="overflow-hidden"
+    trigger="click"
+    position="tl"
+    :content-style="{
+        background: 'rgba(255,255,255,0)',
+        padding: '0.5rem',
+        border: 'none',
+        marginRight: '0.6rem',
+        boxShadow: 'none'
+    }"
+    :arrow-style="{display: 'none'}">
     <div
       class="w-6 h-6 max-w-6 max-h-6 min-w-6 min-h-6 cursor-pointer select-none"
       :class="sortedTasks.length > 0 ? 'animate-pulse':''"

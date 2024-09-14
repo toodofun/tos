@@ -37,10 +37,12 @@ useTimer(async () => {
 </script>
 
 <template>
-  <a-popover trigger="click"
-             position="tl"
-             :content-style="{background: 'rgba(255,255,255,0)', padding: '0.5rem', border: 'none', marginRight: '0.6rem', boxShadow: 'none'}"
-             :arrow-style="{display: 'none'}">
+  <a-popover
+    class="overflow-hidden"
+    trigger="click"
+    position="tl"
+    :content-style="{background: 'rgba(255,255,255,0)', padding: '0.5rem', border: 'none', marginRight: '0.6rem', boxShadow: 'none'}"
+    :arrow-style="{display: 'none'}">
     <div class="tabular-nums cursor-pointer select-none text-nowrap">{{ currentTime }}</div>
     <template #content>
       <div class="flex flex-col gap-4">
