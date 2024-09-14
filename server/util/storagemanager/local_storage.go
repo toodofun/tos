@@ -36,7 +36,12 @@ func NewLocalStorage(args ...interface{}) (*LocalStorage, error) {
 		return nil, fmt.Errorf("%w: root path type error, required string but got %T", ErrRootPath, args[0])
 	}
 
-	_, err := os.Stat(root)
+	root, err := filepath.Abs(root)
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = os.Stat(root)
 	if os.IsNotExist(err) {
 		err := os.MkdirAll(root, os.ModePerm)
 		if err != nil {
@@ -147,9 +152,16 @@ func (lfm *LocalStorage) ListDirectory(directoryPath string) ([]*FileInfo, error
 			logrus.Warnf("get file info error: %s %v", entry.Name(), err)
 			continue
 		}
+
+		relativePath, err := filepath.Rel(lfm.root, filepath.Join(directoryPath, file.Name()))
+		if err != nil {
+			logrus.Warnf("get relative path error: %s %v", file.Name(), err)
+			continue
+		}
+
 		info := &FileInfo{
 			Name:    file.Name(),
-			Path:    strings.TrimPrefix(filepath.Join(directoryPath, file.Name()), lfm.root),
+			Path:    filepath.ToSlash("/" + relativePath),
 			Size:    file.Size(),
 			IsDir:   file.IsDir(),
 			ModTime: file.ModTime(),
@@ -262,22 +274,24 @@ func (lfm *LocalStorage) getRealPath(path string) (string, error) {
 	}
 
 	// 清理传入的路径，移除冗余的符号
-	cleanPath := filepath.Clean(path)
+	cleanPath := filepath.Clean(filepath.FromSlash(path))
 
-	// 获取 root 目录的绝对路径
-	absRoot, err := filepath.Abs(lfm.root)
-	if err != nil {
-		return "", err
-	}
+	//// 获取 root 目录的绝对路径
+	//absRoot, err := filepath.Abs(lfm.root)
+	//if err != nil {
+	//	return "", err
+	//}
+	//
+	//// 将传入的路径转为绝对路径
+	//absPath, err := filepath.Abs(filepath.Join(absRoot, cleanPath))
+	//if err != nil {
+	//	return "", err
+	//}
 
-	// 将传入的路径转为绝对路径
-	absPath, err := filepath.Abs(filepath.Join(absRoot, cleanPath))
-	if err != nil {
-		return "", err
-	}
+	absPath := filepath.Join(lfm.root, cleanPath)
 
 	// 确保传入路径不会超出 root 目录
-	if !strings.HasPrefix(absPath, absRoot) {
+	if !strings.HasPrefix(absPath, lfm.root) {
 		return "", errors.New("invalid path: path attempts to escape root directory")
 	}
 
