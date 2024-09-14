@@ -2,6 +2,7 @@
 import { ref, h, defineAsyncComponent } from 'vue'
 import IconView from '@/components/operating-system/IconView.vue'
 import CommonInfo from '@/views/setting/components/CommonInfo.vue'
+import AppearanceInfo from '@/views/setting/components/AppearanceInfo.vue'
 
 const active = ref<SettingItem>()
 
@@ -49,7 +50,7 @@ const settings: Array<SettingGroup> = [
         id: 'appearance',
         icon: 'internal://icon-setting-appearance',
         title: '外观',
-        right: h('div', 'on development...')
+        right: h(AppearanceInfo)
       }
     ]
   },

@@ -9,7 +9,7 @@ const desktopStore = useDesktopStore()
 
 <template>
   <div
-    class="absolute z-[50] top-0 left-0 right-0 h-8 bg-white/20 p-1 px-4 backdrop-blur-sm text-white flex items-center justify-between text-sm select-none">
+    class="absolute z-[50] top-0 left-0 right-0 h-8 bg-white/20 p-1 px-4 backdrop-blur text-white flex items-center justify-between text-sm select-none">
     <div class="font-bold">{{ desktopStore.systemName }}</div>
     <div class="flex items-center flex-nowrap gap-2">
       <!--网速插件-->

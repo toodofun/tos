@@ -38,7 +38,7 @@ const closeLaunchpad = () => {
   </transition>
   <div
     v-if="dockStore.showDock"
-    class="absolute z-[50] bottom-2 left-0 right-0 mx-auto w-fit bg-white/20 backdrop-blur-sm rounded-xl p-2 shadow-lg">
+    class="absolute z-[50] bottom-2 left-0 right-0 mx-auto w-fit bg-white/20 backdrop-blur rounded-xl p-2 shadow-lg">
     <div class="flex items-end gap-4">
       <div
         v-for="(item, index) in windowsStore.fixedApps"
