@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message } from '@arco-design/web-vue'
+// import { Message } from '@arco-design/web-vue'
 import type { AxiosInstance, AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
 export declare interface Pager<T> {
@@ -45,7 +45,7 @@ class RequestHttp {
       (response: AxiosResponse) => {
         const { data } = response;
         if (data.code && data.code !== RequestEnums.SUCCESS) {
-          Message.error(data.message);
+          // Message.error(data.message);
           return Promise.reject(data);
         }
         return data.code ? data.data : data;
@@ -54,7 +54,7 @@ class RequestHttp {
         if (error.response) {
           this.handleCode(error.response.status);
         } else {
-          Message.error('请求超时，服务器异常');
+          // Message.error('请求超时，服务器异常');
         }
         return Promise.reject(error);
       }
@@ -64,10 +64,10 @@ class RequestHttp {
   private handleCode(code: number): void {
     switch(code) {
       case 401:
-        Message.error('登录失效，请重新登录');
+        // Message.error('登录失效，请重新登录');
         break;
       default:
-        Message.error('数据请求失败');
+        // Message.error('数据请求失败');
         break;
     }
   }
