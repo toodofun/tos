@@ -4,6 +4,7 @@ import { defineStore } from 'pinia'
 export const useDockStore = defineStore('dock', () => {
   const showLaunchpad = ref(false)
   const showDock = ref(true)
+  const dockSize = ref(20)
 
   const setShowLaunchpad = (value: boolean = false) => {
     showLaunchpad.value = value
@@ -13,9 +14,22 @@ export const useDockStore = defineStore('dock', () => {
     showDock.value = value
   }
 
-  return { showLaunchpad, setShowLaunchpad, showDock, setShowDock }
-},{
+  const setDockSize = (value: number = 20) => {
+    dockSize.value = value
+  }
+
+  return {
+    showLaunchpad,
+    setShowLaunchpad,
+    showDock,
+    setShowDock,
+    dockSize,
+    setDockSize
+  }
+}, {
   persist: {
-    pick: []
+    pick: [
+      'dockSize'
+    ]
   }
 })

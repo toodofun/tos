@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import { useDesktopStore } from '@/stores/desktop'
+import dayjs from 'dayjs'
+import { useDockStore } from '@/stores/dock'
 
 const desktopStore = useDesktopStore()
+const dockStore = useDockStore()
+
+const onDockSizeChange = (value: any) => {
+  dockStore.setDockSize(value)
+}
 </script>
 
 <template>
@@ -38,6 +45,18 @@ const desktopStore = useDesktopStore()
             />
           </div>
         </div>
+      </div>
+    </div>
+    <div class="bg-white rounded-md p-2 flex flex-col gap-2">
+      <div class="flex items-center justify-between">
+        <div>Dock栏大小</div>
+        <a-slider
+          :model-value="dockStore.dockSize"
+          @change="onDockSizeChange"
+          :style="{ width: '220px' }"
+          :max="40"
+          :min="20"
+        />
       </div>
     </div>
   </div>

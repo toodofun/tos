@@ -32,6 +32,7 @@ declare module 'vue' {
     APopover: typeof import('@arco-design/web-vue')['Popover']
     AProgress: typeof import('@arco-design/web-vue')['Progress']
     ASelect: typeof import('@arco-design/web-vue')['Select']
+    ASlider: typeof import('@arco-design/web-vue')['Slider']
     ASwitch: typeof import('@arco-design/web-vue')['Switch']
     ATable: typeof import('@arco-design/web-vue')['Table']
     AUpload: typeof import('@arco-design/web-vue')['Upload']

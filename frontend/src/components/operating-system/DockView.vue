@@ -28,6 +28,16 @@ const closeLaunchpad = () => {
   dockStore.setShowLaunchpad(false)
 }
 
+const iconCustomClass = computed(() => {
+  if (dockStore.dockSize <= 20) {
+    return 'text-xs'
+  } else if (dockStore.dockSize <= 30) {
+    return 'text-lg'
+  } else {
+    return 'text-2xl'
+  }
+})
+
 </script>
 
 <template>
@@ -50,15 +60,17 @@ const closeLaunchpad = () => {
         :style="{zIndex: getScale(index) + 1}"
       >
         <DynamicBackground
-          class="relative w-5 h-5 flex items-center justify-center rounded-lg bg-white/100 overflow-hidden backdrop-blur-none text-3xl cursor-pointer will-change-transform iconfont"
+          class="relative flex items-center justify-center rounded-lg bg-white/100 overflow-hidden backdrop-blur-none text-3xl cursor-pointer will-change-transform iconfont"
           :style="{
             transform: `scale(${getScale(index)})`,
             transformOrigin: 'bottom',
             transition: 'all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)',
+            width: dockStore.dockSize + 'px',
+            height: dockStore.dockSize + 'px',
           }"
           :background="item.background"
         >
-          <IconView :src="item.icon" customClass="text-sm" />
+          <IconView :src="item.icon" :customClass="iconCustomClass" />
         </DynamicBackground>
         <span
           class="absolute -bottom-6 px-2 py-1 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-nowrap">
@@ -76,14 +88,16 @@ const closeLaunchpad = () => {
       >
         <DynamicBackground
           :background="item.background"
-          class="relative w-5 h-5 flex items-center justify-center rounded-lg bg-white/100 overflow-hidden backdrop-blur-none text-3xl cursor-pointer will-change-transform iconfont"
+          class="relative flex items-center justify-center rounded-lg bg-white/100 overflow-hidden backdrop-blur-none text-3xl cursor-pointer will-change-transform iconfont"
           :style="{
             transform: `scale(${getScale(index+windowsStore.fixedApps.length)})`,
             transformOrigin: 'bottom',
             transition: 'all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)',
+            width: dockStore.dockSize + 'px',
+            height: dockStore.dockSize + 'px',
           }"
         >
-          <IconView :src="item.icon" customClass="text-sm" />
+          <IconView :src="item.icon" :customClass="iconCustomClass" />
           <!--启动应用标识-->
           <div class="absolute bottom-0 left-0 right-0 flex justify-center" v-if="item.active">
             <div class="w-full h-[0.1rem] bg-sky-500 rounded-full"></div>
