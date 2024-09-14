@@ -32,8 +32,8 @@ const sortedTasks = computed(() => {
     </div>
     <template #content>
       <div
-        class="select-none bg-white/100 backdrop-blur-sm p-2 w-72 max-w-72 min-w-72 max-h-[30rem] overflow-y-auto rounded-lg flex flex-col gap-2">
-        <div class="flex justify-between items-center">
+        class="select-none bg-white/100 backdrop-blur-sm px-2 pb-2 w-72 max-w-72 min-w-72 max-h-[30rem] overflow-y-auto rounded-lg flex flex-col gap-2">
+        <div class="flex justify-between items-center sticky bg-white z-20 top-0 py-2">
           <div class="font-bold">任务队列</div>
           <div class="flex items-center gap-1">
             <a-popover trigger="hover" content="重试失败的任务">
