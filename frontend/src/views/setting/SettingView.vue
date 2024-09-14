@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, h, defineAsyncComponent } from 'vue'
 import IconView from '@/components/operating-system/IconView.vue'
+import CommonInfo from '@/views/setting/components/CommonInfo.vue'
 
 const active = ref<SettingItem>()
 
@@ -42,7 +43,7 @@ const settings: Array<SettingGroup> = [
         id: 'common',
         icon: 'internal://icon-setting-common',
         title: '通用',
-        right: h('div', 'on development...')
+        right: h(CommonInfo)
       },
       {
         id: 'appearance',
@@ -100,7 +101,7 @@ const settings: Array<SettingGroup> = [
   },
 ]
 
-active.value = settings[3].items[0]
+active.value = settings[1].items[0]
 
 const onClick = (item: SettingItem) => {
   active.value = item

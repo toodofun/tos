@@ -1,20 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import useTimer from '@/hooks/useTimer'
 import dayjs from 'dayjs'
 import 'dayjs/locale/zh-cn'
 import axios from '@/utils/request'
 import { getHolidayDetail, type HolidayDetail } from '@/utils/getHolidayDetail'
 import CalendarWidget from '@/components/operating-system/components/CalendarWidget.vue'
+import { useDesktopStore } from '@/stores/desktop'
 
 dayjs.locale('zh-cn')
 
-const props = defineProps({
-  showSeconds: {
-    type: Boolean,
-    default: false
-  }
-})
+const desktopStore = useDesktopStore()
 
 const currentTime = ref('')
 const next7DaysEvent = ref<Array<HolidayDetail>>([])
@@ -22,8 +18,8 @@ const next7DaysEvent = ref<Array<HolidayDetail>>([])
 
 useTimer(async () => {
   const time = await axios.get<number>('/system/timestamp')
-  currentTime.value = dayjs(time).format(props.showSeconds ? 'M月D日 dddd HH:mm:ss' : 'M月D日 dddd HH:mm')
-}, { interval: props.showSeconds ? 1000 : 1000 * 60 })
+  currentTime.value = dayjs(time).format(desktopStore.statusBarShowSeconds ? `${desktopStore.dateFormat} HH:mm:ss` : `${desktopStore.dateFormat} HH:mm`)
+}, { interval: 1000 })
 
 useTimer(async () => {
   const temp: Array<HolidayDetail> = []

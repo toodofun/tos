@@ -10,8 +10,7 @@ const desktopStore = useDesktopStore()
 <template>
   <div
     class="absolute z-[50] top-0 left-0 right-0 h-8 bg-white/20 p-1 px-4 backdrop-blur-sm text-white flex items-center justify-between text-sm select-none">
-    <div class="font-bold">Toodo Cloud OS
-    </div>
+    <div class="font-bold">{{ desktopStore.systemName }}</div>
     <div class="flex items-center flex-nowrap gap-2">
       <!--网速插件-->
       <!--      <div class="flex flex-col items-end tabular-nums text-[0.7rem] leading-3">-->
@@ -23,7 +22,7 @@ const desktopStore = useDesktopStore()
       <!--控制中心-->
       <!--<ControlCenter />-->
       <!--时间插件-->
-      <DateTime :show-seconds="desktopStore.statusBarShowSeconds" />
+      <DateTime />
     </div>
   </div>
 </template>
