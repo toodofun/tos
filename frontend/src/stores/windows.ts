@@ -74,6 +74,12 @@ export const useWindowsStore = defineStore('windows', () => {
         background: 'linear-gradient(to right, #4e54c8, #8f94fb)'
       },
       {
+        icon: 'internal://icon-terminal',
+        title: '终端',
+        page: 'internal://terminal',
+        theme: 'dark'
+      },
+      {
         icon: 'internal://icon-app-store',
         title: '应用商店',
         page: 'internal://app-store',
@@ -86,9 +92,8 @@ export const useWindowsStore = defineStore('windows', () => {
         page: 'internal://setting',
         background: 'linear-gradient(to right, #536976, #292e49)',
         singleton: true
-      },
-      { icon: 'internal://icon-task', title: '任务管理', page: '//toodo.fun' },
-      { icon: 'internal://icon-terminal', title: '终端', page: 'internal://terminal', theme: 'dark' }
+      }
+      // { icon: 'internal://icon-task', title: '任务管理', page: '//toodo.fun' },
     ])
     const minimizedApps = ref<Array<WindowInfo>>([])
 
@@ -100,12 +105,12 @@ export const useWindowsStore = defineStore('windows', () => {
         height: 720,
         page: 'https://genshin.titlecan.cn/'
       },
-      {
-        icon: 'internal://icon-app',
-        title: '启动台',
-        page: 'system://launchpad',
-        background: 'linear-gradient(to right, #4e54c8, #8f94fb)'
-      },
+      // {
+      //   icon: 'internal://icon-app',
+      //   title: '启动台',
+      //   page: 'system://launchpad',
+      //   background: 'linear-gradient(to right, #4e54c8, #8f94fb)'
+      // },
       // {
       //   icon: 'https://hexgl.bkcore.com/play/css/title.png',
       //   title: 'HexGL赛车',
@@ -113,14 +118,14 @@ export const useWindowsStore = defineStore('windows', () => {
       //   height: 720,
       //   page: 'https://hexgl.bkcore.com/play/'
       // },
-      {
-        icon: 'https://th.bing.com/th/id/OIP.nfFu7l8TPI6fnX5Fb8bJ_QHaHa?rs=1&pid=ImgDetMain',
-        title: '亲戚称呼计算器',
-        width: 338,
-        height: 600,
-        page: 'https://passer-by.com/relationship/vue/#/',
-        theme: 'dark'
-      },
+      // {
+      //   icon: 'https://th.bing.com/th/id/OIP.nfFu7l8TPI6fnX5Fb8bJ_QHaHa?rs=1&pid=ImgDetMain',
+      //   title: '亲戚称呼计算器',
+      //   width: 338,
+      //   height: 600,
+      //   page: 'https://passer-by.com/relationship/vue/#/',
+      //   theme: 'dark'
+      // },
       {
         icon: 'internal://icon-app-store',
         title: '应用商店',
