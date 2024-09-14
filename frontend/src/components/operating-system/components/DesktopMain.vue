@@ -92,11 +92,11 @@ const remove = (id: string) => {
   <div ref="gridContainer" class="absolute top-8 bottom-0 left-0 right-0 z-[1] select-none p-4">
     <grid-layout
       v-model:data="layout"
-      @remove="remove"
       :drage="false"
       :draggable="false"
       :remove="false"
       :resize="false"
+      :is-draw-grid-lines="false"
       :col="col"
       :gutter="gutter"
       :row-h="rowH"

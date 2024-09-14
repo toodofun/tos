@@ -66,8 +66,10 @@ import VueDragResize from '@/components/VueDragResize.vue'
 import IconView from '@/components/operating-system/IconView.vue'
 import DynamicBackground from '@/components/operating-system/components/DynamicBackground.vue'
 import eventBus from '@/plugins/eventBus'
+import { useDockStore } from '@/stores/dock'
 
 const windowsStore = useWindowsStore()
+const dockStore = useDockStore()
 
 const props = defineProps({
   id: {
@@ -119,6 +121,7 @@ const onResizing = () => {
 const toggleFullscreen = () => {
   isFullscreen.value = !isFullscreen.value
   if (isFullscreen.value && targetDiv.value) {
+    dockStore.setShowDock(false)
     z.value = 51
     document.body.style.overflow = 'hidden' // 禁用滚动
     const td = targetDiv.value
@@ -126,9 +129,10 @@ const toggleFullscreen = () => {
     td.style.top = '32px'
     td.style.left = '0'
     td.style.width = '100vw'
-    td.style.height = 'calc(100vh - 100px)'
+    td.style.height = 'calc(100vh - 32px)'
     td.style.zIndex = '9999' // 确保全屏时在最上层
   } else if (targetDiv.value) {
+    dockStore.setShowDock(true)
     z.value = 10
     document.body.style.overflow = '' // 恢复滚动
     const td = targetDiv.value

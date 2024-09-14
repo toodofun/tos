@@ -1,6 +1,7 @@
 import { ref, h, defineAsyncComponent, type VNode } from 'vue'
 import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
+import { useDockStore } from '@/stores/dock'
 
 export const defaultBackground = 'white'
 
@@ -61,6 +62,7 @@ export const useWindowsStore = defineStore('windows', () => {
     const maxZ = ref(1)
 
     const restoreFunctionMap: { [key: string]: () => void } = {}
+    const dockStore = useDockStore()
 
     // Dock
     const fixedApps = ref<Array<CreateNewWindowInfo>>([
@@ -97,6 +99,12 @@ export const useWindowsStore = defineStore('windows', () => {
         width: 1280,
         height: 720,
         page: 'https://genshin.titlecan.cn/'
+      },
+      {
+        icon: 'internal://icon-app',
+        title: '启动台',
+        page: 'system://launchpad',
+        background: 'linear-gradient(to right, #4e54c8, #8f94fb)'
       },
       // {
       //   icon: 'https://hexgl.bkcore.com/play/css/title.png',
@@ -143,6 +151,12 @@ export const useWindowsStore = defineStore('windows', () => {
     }
 
     function openWindow(w: CreateNewWindowInfo) {
+      if (w.page === 'system://launchpad') {
+        dockStore.setShowLaunchpad(true)
+        return
+      }
+      dockStore.setShowLaunchpad(false)
+
       if (w.singleton) {
         const i = minimizedApps.value.findIndex((item) => {
           return item.page === w.page
