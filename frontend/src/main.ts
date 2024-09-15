@@ -9,6 +9,8 @@ import router from './router'
 import UUID from 'vue3-uuid';
 
 import '@arco-design/web-vue/dist/arco.css'
+import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
+import ContextMenu from '@imengyu/vue3-context-menu'
 
 const app = createApp(App)
 
@@ -18,5 +20,6 @@ pinia.use(piniaPluginPersistedstate)
 app.use(UUID)
 app.use(pinia)
 app.use(router)
+app.use(ContextMenu)
 
 app.mount('#app')

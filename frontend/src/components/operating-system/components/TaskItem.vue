@@ -69,7 +69,7 @@ const getTitle = (title: string) => {
 </script>
 
 <template>
-  <a-popover trigger="hover" :content="task.title">
+  <a-popover class="overflow-hidden" trigger="hover" :content="task.title">
     <div class="flex flex-col bg-slate-100 px-2 rounded py-2">
       <div class="text-xs flex justify-between items-center">
         <div class="max-w-52 truncate text-ellipsis overflow-hidden" :title="task.title">{{ getTitle(task.title) }}

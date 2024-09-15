@@ -55,16 +55,25 @@ func (s *Service) GetStorageManager(id uuid.UUID) (storagemanager.StorageManager
 	}
 }
 
-func (s *Service) ListDirectory(directoryPath string) ([]*storagemanager.FileInfo, error) {
-	sm, err := s.GetStorageManager(defaultLocationId)
+func (s *Service) ListStorages() ([]*Storage, error) {
+	res := make([]*Storage, 0)
+	if err := s.db.DB.Model(&Storage{}).Select("id, title, location_type").Find(&res).Error; err != nil {
+		logrus.Errorf("list storages error: %v", err)
+		return nil, errors.New("获取存储列表失败")
+	}
+	return res, nil
+}
+
+func (s *Service) ListDirectory(id uuid.UUID, directoryPath string) ([]*storagemanager.FileInfo, error) {
+	sm, err := s.GetStorageManager(id)
 	if err != nil {
 		return nil, err
 	}
 	return sm.ListDirectory(directoryPath)
 }
 
-func (s *Service) Upload(fileName string, fileContent io.Reader, targetPath string, mode string) error {
-	sm, err := s.GetStorageManager(defaultLocationId)
+func (s *Service) Upload(id uuid.UUID, fileName string, fileContent io.Reader, targetPath string, mode string) error {
+	sm, err := s.GetStorageManager(id)
 	if err != nil {
 		return err
 	}
@@ -76,8 +85,8 @@ func (s *Service) Upload(fileName string, fileContent io.Reader, targetPath stri
 	return sm.Upload(fileName, fileContent, targetPath)
 }
 
-func (s *Service) Exists(filePath string) bool {
-	sm, err := s.GetStorageManager(defaultLocationId)
+func (s *Service) Exists(id uuid.UUID, filePath string) bool {
+	sm, err := s.GetStorageManager(id)
 	if err != nil {
 		return false
 	}
@@ -85,8 +94,8 @@ func (s *Service) Exists(filePath string) bool {
 	return sm.Exists(filePath)
 }
 
-func (s *Service) GetSpecialPath() []*storagemanager.FileInfo {
-	sm, err := s.GetStorageManager(defaultLocationId)
+func (s *Service) GetSpecialPath(id uuid.UUID) []*storagemanager.FileInfo {
+	sm, err := s.GetStorageManager(id)
 	if err != nil {
 		return nil
 	}
@@ -101,6 +110,7 @@ func (s *Service) Initialize() error {
 	defaultLocalStorage := NewStorageWithID(defaultLocationId)
 	defaultLocalStorage.LocationType = storagemanager.LocationTypeLocal
 	defaultLocalStorage.Args = config.Current().Storage.Root
+	defaultLocalStorage.Title = "默认存储"
 
 	if err := s.db.DB.FirstOrCreate(defaultLocalStorage).Error; err != nil {
 		return err

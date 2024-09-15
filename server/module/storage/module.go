@@ -6,6 +6,7 @@ import (
 )
 
 type Storage struct {
+	Title        string `json:"title" yaml:"title"`
 	LocationType string `json:"locationType" yaml:"locationType" default:"local"`
 	Args         string `json:"args" yaml:"args"`
 

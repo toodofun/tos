@@ -9,19 +9,32 @@ export interface FileInfo {
   modTime: Date;
 }
 
-export const listDirectory = async (path: string): Promise<FileInfo[]> => {
-  return axios.get(`/storage/folder?path=${path}`)
+export interface Storage {
+  title: string;
+  locationType: string;
+  args?: string;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-export const getSP = async (): Promise<FileInfo[]> => {
-  return axios.get(`/storage/sp`)
+export const listStorages = async(): Promise<Storage[]> => {
+  return axios.get(`/storage/list`)
 }
 
-export const fileOriDirExists = async (path: string): Promise<boolean> => {
-  return axios.get(`/storage/exists?path=${path}`)
+export const listDirectory = async (id: string, path: string): Promise<FileInfo[]> => {
+  return axios.get(`/storage/${id}/folder?path=${path}`)
 }
 
-export const onUploadFile = async (option: any, targetPath: string, mode: 'overwrite' | 'ignore') => {
+export const getSP = async (id: string): Promise<FileInfo[]> => {
+  return axios.get(`/storage/${id}/sp`)
+}
+
+export const fileOriDirExists = async (id: string, path: string): Promise<boolean> => {
+  return axios.get(`/storage/${id}/exists?path=${path}`)
+}
+
+export const onUploadFile = async (id: string, option: any, targetPath: string, mode: 'overwrite' | 'ignore') => {
   const { fileItem, name, onProgress, onError, onSuccess } = option
   const formData = new FormData()
   const n = name || fileItem.name
@@ -31,12 +44,12 @@ export const onUploadFile = async (option: any, targetPath: string, mode: 'overw
   formData.append('targetPath', tp)
   formData.append('mode', mode)
 
-  if (mode === 'ignore' && await fileOriDirExists(joinPaths(tp, n))) {
+  if (mode === 'ignore' && await fileOriDirExists(id, joinPaths(tp, n))) {
     option.onProgress(100)
     return
   }
 
-  await axios.post('/storage/upload', formData, {
+  await axios.post(`/storage/${id}/upload`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     },

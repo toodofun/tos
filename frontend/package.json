@@ -13,6 +13,7 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@imengyu/vue3-context-menu": "^1.4.2",
     "@vueuse/core": "^11.0.3",
     "axios": "^1.7.7",
     "broadcast-channel": "^7.0.0",

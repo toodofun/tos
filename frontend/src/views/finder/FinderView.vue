@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type FileInfo, listDirectory, onUploadFile, getSP } from '@/views/finder/FinderView'
+import { type FileInfo, type Storage, listDirectory, onUploadFile, getSP, listStorages } from '@/views/finder/FinderView'
 import {
   ref,
   computed,
@@ -33,6 +33,8 @@ eventBus.on('finder-refresh', (path) => {
 })
 
 const showInList = ref(false)
+const storages = ref<Storage[]>([])
+const storageId = ref('')
 const sp = ref<FileInfo[]>([])
 const files = ref<FileInfo[]>([])
 const loading = ref(false)
@@ -41,15 +43,35 @@ const selectedInfo = ref<FileInfo[]>([])
 const pathHistory = ref<string[]>([currentPath.value])
 const currentIndex = ref(0)
 
-const init = async () => {
-  loading.value = true
-  await getSPData()
-  await getData()
-  loading.value = false
+const init = async (useLoading: boolean = true) => {
+  if (useLoading) {
+    loading.value = true
+  }
+  await listStorages()
+    .then(async (res) => {
+      storages.value = res
+      if (res.length > 0) {
+        storageId.value = res[0].id
+        await getSPData()
+        await getData()
+      }
+    })
+    .catch(e => {
+      console.log(e)
+    })
+  if (useLoading) {
+    loading.value = false
+  }
 }
 
 const getSPData = async () => {
-  sp.value = await getSP()
+  await getSP(storageId.value)
+    .then(res => {
+      sp.value = res
+    })
+    .catch(e => {
+      console.log(e)
+    })
 }
 
 const getData = async (useLoading: boolean = true) => {
@@ -57,7 +79,7 @@ const getData = async (useLoading: boolean = true) => {
     loading.value = true
     await getSPData()
   }
-  await listDirectory(currentPath.value)
+  await listDirectory(storageId.value, currentPath.value)
     .then((res) => {
       files.value = res
       selectedInfo.value = []
@@ -144,7 +166,7 @@ const handleUploadModeIgnore = (option: RequestOption): UploadRequest => {
 
   queueStore.submit(`Upload ${title}`, async (onProgress) => {
     option.onProgress = onProgress
-    await onUploadFile(option, initialPath, 'ignore')
+    await onUploadFile(storageId.value, option, initialPath, 'ignore')
     eventBus.emit('finder-refresh', initialPath)
   })
   return {}
@@ -158,7 +180,7 @@ const handleUploadModeOverwrite = (option: RequestOption): UploadRequest => {
 
   queueStore.submit(`Upload ${title}`, async (onProgress) => {
     option.onProgress = onProgress
-    await onUploadFile(option, initialPath, 'overwrite')
+    await onUploadFile(storageId.value, option, initialPath, 'overwrite')
     eventBus.emit('finder-refresh', initialPath)
   })
   return {}

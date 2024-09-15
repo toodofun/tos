@@ -44,14 +44,14 @@ const sortedTasks = computed(() => {
         <div class="flex justify-between items-center sticky bg-white z-20 top-0 py-2">
           <div class="font-bold">任务队列</div>
           <div class="flex items-center gap-1">
-            <a-popover trigger="hover" content="重试失败的任务">
+            <a-popover class="overflow-hidden" trigger="hover" content="重试失败的任务">
               <a-button size="mini" rounded @click="queueStore.retryFailedTasks">
                 <template #icon>
                   <icon-refresh />
                 </template>
               </a-button>
             </a-popover>
-            <a-popover trigger="hover" content="清除成功的任务">
+            <a-popover class="overflow-hidden" trigger="hover" content="清除成功的任务">
               <a-button size="mini" rounded @click="queueStore.clearSuccessTasks">
                 <template #icon>
                   <icon-delete />
