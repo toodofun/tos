@@ -1,0 +1,6 @@
+charts
+_output
+**/node_modules
+**/.idea
+**/.vscode
+frontend/dist
