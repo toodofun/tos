@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { type FileInfo, type Storage, listDirectory, onUploadFile, getSP, listStorages } from '@/views/finder/FinderView'
+import {
+  type FileInfo,
+  type Storage,
+  listDirectory,
+  onUploadFile,
+  getSP,
+  listStorages
+} from '@/views/finder/FinderView'
 import {
   ref,
   computed,
@@ -89,8 +96,8 @@ const getData = async (useLoading: boolean = true) => {
         title: '出错了',
         content: err.message,
         escToClose: false,
-        maskClosable: false,
-      });
+        maskClosable: false
+      })
       files.value = []
     })
     .finally(() => {

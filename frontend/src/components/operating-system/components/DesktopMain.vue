@@ -89,7 +89,7 @@ const remove = (id: string) => {
 </script>
 
 <template>
-  <div ref="gridContainer" class="absolute top-8 bottom-0 left-0 right-0 z-[1] select-none p-4">
+  <div ref="gridContainer" class="absolute top-8 bottom-0 left-0 right-0 select-none p-4">
     <grid-layout
       v-model:data="layout"
       :drage="false"
