@@ -17,7 +17,7 @@ var ErrCreatePath = errors.New("create path error")
 
 var specialPath = []*FileInfo{
 	{
-		Name: "ROOT",
+		Name: "Root",
 		Path: "/",
 	},
 }
@@ -277,17 +277,6 @@ func (lfm *LocalStorage) getRealPath(path string) (string, error) {
 	cleanPath := filepath.Clean(filepath.FromSlash(path))
 
 	//// 获取 root 目录的绝对路径
-	//absRoot, err := filepath.Abs(lfm.root)
-	//if err != nil {
-	//	return "", err
-	//}
-	//
-	//// 将传入的路径转为绝对路径
-	//absPath, err := filepath.Abs(filepath.Join(absRoot, cleanPath))
-	//if err != nil {
-	//	return "", err
-	//}
-
 	absPath := filepath.Join(lfm.root, cleanPath)
 
 	// 确保传入路径不会超出 root 目录

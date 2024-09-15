@@ -96,6 +96,9 @@ export const getFileIcon = (file: FileInfo): string => {
     case '.pptx':
       return 'internal://icon-finder-ppt'
     case '.txt':
+    case '.md':
+    case '.sum':
+    case '.mod':
       return 'internal://icon-finder-txt'
     case '.csv':
     case '.xls':

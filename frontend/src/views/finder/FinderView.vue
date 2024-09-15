@@ -187,7 +187,7 @@ init()
     <a-layout class="overflow-hidden">
       <a-layout-header class="p-2">
         <div class="px-4 flex items-center justify-start gap-1 z-1 box-border">
-          <a-button-group size="small" rounded>
+          <a-button-group size="small" rounded :disabled="loading">
             <a-button type="secondary" :disabled="!canGoBack" @click="onClickPrePath">
               <icon-left />
             </a-button>
@@ -195,7 +195,7 @@ init()
               <icon-right />
             </a-button>
           </a-button-group>
-          <a-button-group size="small" rounded>
+          <a-button-group size="small" rounded :disabled="loading">
             <a-button @click="() => {getData()}">
               <icon-refresh size="mini" :class="loading ? 'animate-spin' : ''" />
             </a-button>
@@ -214,7 +214,7 @@ init()
             >{{ item }}
             </a-breadcrumb-item>
           </a-breadcrumb>
-          <a-button-group size="small" rounded>
+          <a-button-group size="small" rounded :disabled="loading">
             <a-dropdown :popup-max-height="false" position="bl">
               <a-button>
                 <div class="flex gap-1 items-center">
@@ -223,12 +223,12 @@ init()
                 </div>
               </a-button>
               <template #content>
-                <a-doption>
-                  <div class="flex items-center gap-1">
-                    <icon-folder-add />
-                    <div>新建文件</div>
-                  </div>
-                </a-doption>
+                <!--                <a-doption>-->
+                <!--                  <div class="flex items-center gap-1">-->
+                <!--                    <icon-folder-add />-->
+                <!--                    <div>新建文件</div>-->
+                <!--                  </div>-->
+                <!--                </a-doption>-->
                 <a-doption>
                   <div class="flex items-center gap-1">
                     <icon-folder-add />
@@ -319,19 +319,24 @@ init()
         </div>
       </a-layout-header>
       <a-layout-content class="w-full relative overflow-y-auto">
-        <div v-if="files.length > 0">
-          <ListView v-if="showInList" :on-click="onClick" :on-double-click="onDoubleClick" :items="files" />
-          <GridView v-else :on-click="onClick" :on-double-click="onDoubleClick" :selected-info="selectedInfo"
-                    :items="files" />
-        </div>
-        <div v-else class="absolute inset-0 flex items-center justify-center z-0">
-          <a-empty description="暂无文件" />
-        </div>
+        <a-spin :loading="loading">
+          <div v-if="files.length > 0">
+            <ListView v-if="showInList" :on-click="onClick" :on-double-click="onDoubleClick" :items="files" />
+            <GridView v-else :on-click="onClick" :on-double-click="onDoubleClick" :selected-info="selectedInfo"
+                      :items="files" />
+          </div>
+          <div v-else class="absolute inset-0 flex items-center justify-center z-0">
+            <a-empty description="暂无文件" />
+          </div>
+        </a-spin>
       </a-layout-content>
     </a-layout>
   </a-layout>
 </template>
 
 <style scoped>
-
+:deep(.arco-spin) {
+  width: 100%;
+  height: 100%;
+}
 </style>
