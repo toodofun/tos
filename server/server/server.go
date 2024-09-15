@@ -9,6 +9,7 @@ import (
 	"github.com/MR5356/tos/module/storage"
 	"github.com/MR5356/tos/module/system"
 	"github.com/MR5356/tos/module/terminal"
+	"github.com/MR5356/tos/persistence/database"
 	"github.com/MR5356/tos/server/ginmiddleware"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
@@ -43,6 +44,8 @@ func New(cfg *config.Config) (server *Server, err error) {
 	} else {
 		gin.SetMode(gin.ReleaseMode)
 	}
+
+	database.NewDatabase(cfg)
 
 	engine := gin.New()
 	engine.MaxMultipartMemory = 8 << 20

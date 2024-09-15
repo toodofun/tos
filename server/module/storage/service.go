@@ -1,21 +1,62 @@
 package storage
 
 import (
+	"errors"
 	"github.com/MR5356/tos/config"
+	"github.com/MR5356/tos/persistence/database"
+	"github.com/MR5356/tos/util/cacheutil"
 	"github.com/MR5356/tos/util/storagemanager"
+	"github.com/google/uuid"
+	"github.com/sirupsen/logrus"
 	"io"
 	"path/filepath"
+	"time"
+)
+
+var (
+	defaultLocationId = uuid.MustParse("ae35c8f1-aad8-b5e2-b5ca-0187ec7cafa1")
 )
 
 type Service struct {
+	cache *cacheutil.CountdownCache[storagemanager.StorageManager]
+	db    *database.BaseMapper[*Storage]
 }
 
 func GetService() *Service {
-	return &Service{}
+	return &Service{
+		cache: cacheutil.NewCountdownCache[storagemanager.StorageManager](time.Minute * 30),
+		db:    database.NewMapper(database.GetDB(), &Storage{}),
+	}
+}
+
+func (s *Service) GetStorageManager(id uuid.UUID) (storagemanager.StorageManager, error) {
+	location, err := s.db.Detail(NewStorageWithID(id))
+	if err != nil {
+		logrus.Errorf("get storage manager error: %v", err)
+		return nil, errors.New("获取存储管理器失败")
+	}
+	locationType := location.LocationType
+
+	if sm, ok := s.cache.Get(locationType); ok {
+		return sm, nil
+	}
+	switch locationType {
+	case storagemanager.LocationTypeLocal:
+		if sm, err := storagemanager.GetStorage(storagemanager.LocationTypeLocal, config.Current().Storage.Root); err != nil {
+			return nil, err
+		} else {
+			s.cache.Set(locationType, sm, func() {
+				_ = sm.Close()
+			})
+			return sm, nil
+		}
+	default:
+		return nil, storagemanager.ErrStorageType
+	}
 }
 
 func (s *Service) ListDirectory(directoryPath string) ([]*storagemanager.FileInfo, error) {
-	sm, err := storagemanager.GetStorage(storagemanager.LocationTypeLocal, config.Current().Storage.Root)
+	sm, err := s.GetStorageManager(defaultLocationId)
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +64,7 @@ func (s *Service) ListDirectory(directoryPath string) ([]*storagemanager.FileInf
 }
 
 func (s *Service) Upload(fileName string, fileContent io.Reader, targetPath string, mode string) error {
-	sm, err := storagemanager.GetStorage(storagemanager.LocationTypeLocal, config.Current().Storage.Root)
+	sm, err := s.GetStorageManager(defaultLocationId)
 	if err != nil {
 		return err
 	}
@@ -36,7 +77,7 @@ func (s *Service) Upload(fileName string, fileContent io.Reader, targetPath stri
 }
 
 func (s *Service) Exists(filePath string) bool {
-	sm, err := storagemanager.GetStorage(storagemanager.LocationTypeLocal, config.Current().Storage.Root)
+	sm, err := s.GetStorageManager(defaultLocationId)
 	if err != nil {
 		return false
 	}
@@ -45,7 +86,7 @@ func (s *Service) Exists(filePath string) bool {
 }
 
 func (s *Service) GetSpecialPath() []*storagemanager.FileInfo {
-	sm, err := storagemanager.GetStorage(storagemanager.LocationTypeLocal, config.Current().Storage.Root)
+	sm, err := s.GetStorageManager(defaultLocationId)
 	if err != nil {
 		return nil
 	}
@@ -53,5 +94,16 @@ func (s *Service) GetSpecialPath() []*storagemanager.FileInfo {
 }
 
 func (s *Service) Initialize() error {
+	if err := s.db.DB.AutoMigrate(&Storage{}); err != nil {
+		return err
+	}
+
+	defaultLocalStorage := NewStorageWithID(defaultLocationId)
+	defaultLocalStorage.LocationType = storagemanager.LocationTypeLocal
+	defaultLocalStorage.Args = config.Current().Storage.Root
+
+	if err := s.db.DB.FirstOrCreate(defaultLocalStorage).Error; err != nil {
+		return err
+	}
 	return nil
 }

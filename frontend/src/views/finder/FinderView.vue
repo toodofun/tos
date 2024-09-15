@@ -18,7 +18,7 @@ import {
   IconHome
 } from '@arco-design/web-vue/es/icon'
 import { useQueueStore } from '@/stores/queue'
-import type { RequestOption, UploadRequest } from '@arco-design/web-vue'
+import { Modal, type RequestOption, type UploadRequest } from '@arco-design/web-vue'
 import eventBus from '@/plugins/eventBus'
 import GridView from '@/views/finder/components/GridView.vue'
 import ListView from '@/views/finder/components/ListView.vue'
@@ -55,13 +55,20 @@ const getSPData = async () => {
 const getData = async (useLoading: boolean = true) => {
   if (useLoading) {
     loading.value = true
+    await getSPData()
   }
   await listDirectory(currentPath.value)
     .then((res) => {
       files.value = res
       selectedInfo.value = []
     })
-    .catch(() => {
+    .catch((err) => {
+      Modal.error({
+        title: '出错了',
+        content: err.message,
+        escToClose: false,
+        maskClosable: false,
+      });
       files.value = []
     })
     .finally(() => {
@@ -165,8 +172,11 @@ init()
     <a-layout-sider :resize-directions="['right']" style="min-width: 5rem;">
       <div class="relative h-full">
         <div class="flex flex-col gap-2 p-2">
-          <div class="cursor-pointer hover:bg-slate-200 rounded p-0.5" v-for="(item, index) in sp" :key="index"
-               @click="goToPath(item.path)">
+          <div
+            class="cursor-pointer hover:bg-slate-200 rounded p-0.5" v-for="(item, index) in sp" :key="index"
+            :class="currentPath === item.path ? 'bg-slate-200' : ''"
+            @click="goToPath(item.path)"
+          >
             <div class="flex items-center justify-start gap-1 text-gray-800">
               <div class="w-6 h-6 min-w-6 max-w-6 min-h-6 max-h-6">
                 <IconView src="internal://icon-finder-folder" />
