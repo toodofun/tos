@@ -8,16 +8,25 @@ defineProps({
   app: {
     type: Object as PropType<CreateNewWindowInfo>,
     required: true
+  },
+  size: {
+    type: Number,
+    required: false,
+    default: 100
   }
 })
 </script>
 
 <template>
-  <div class="w-[100px] h-[100px] flex justify-center items-center cursor-pointer">
+  <div
+    class="w-[100px] h-[100px] flex justify-center items-center cursor-pointer"
+    :style="{width: size + 'px', height: size + 'px'}"
+  >
     <div class="flex flex-col items-center gap-1">
       <DynamicBackground
         :background="app.background"
         class="w-16 h-16 aspect-square rounded-2xl bg-white/100 overflow-hidden"
+        :style="{width: size / 100 * 66 + 'px', height: size / 100 * 66 + 'px'}"
       >
         <IconView :src="app.icon" custom-class="text-5xl" />
       </DynamicBackground>

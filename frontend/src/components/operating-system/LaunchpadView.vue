@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
 import DesktopIcon from '@/components/operating-system/components/DesktopIcon.vue'
-import type { CreateNewWindowInfo } from '@/stores/windows'
+import { type CreateNewWindowInfo, useWindowsStore } from '@/stores/windows'
+
+const windowStore = useWindowsStore()
 
 defineProps({
   onOpenWindow: {
@@ -16,19 +18,10 @@ defineProps({
 </script>
 
 <template>
-  <div class="absolute inset-0 bg-slate-800/60 backdrop-blur-lg p-16" @click="onClose">
-    <DesktopIcon :app="{
-        icon: 'internal://icon-setting',
-        title: '设置',
-        page: 'internal://setting',
-        background: 'linear-gradient(to right, #536976, #292e49)'
-      }" @click="onOpenWindow({
-        icon: 'internal://icon-setting',
-        title: '设置',
-        page: 'internal://setting',
-        background: 'linear-gradient(to right, #536976, #292e49)',
-        singleton: true
-      })"/>
+  <div class="absolute inset-0 px-[15%] py-[10%] bg-slate-800/60 backdrop-blur-lg" @click="onClose">
+    <div class="w-full h-full grid gap-4" style="grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));">
+      <DesktopIcon :size="136" :app="app" @click="onOpenWindow(app)" v-for="app in windowStore.allApps" :key="app.id" />
+    </div>
   </div>
 </template>
 

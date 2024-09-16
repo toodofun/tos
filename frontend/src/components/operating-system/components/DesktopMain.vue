@@ -5,8 +5,11 @@ import DesktopIcon from '@/components/operating-system/components/DesktopIcon.vu
 import { GridLayout, GridItem, type Layout, type LayoutItem } from 'vue3-draggable-grid'
 import 'vue3-draggable-grid/dist/style.css'
 import CalendarWidget from '@/components/operating-system/components/CalendarWidget.vue'
+import { storeToRefs } from 'pinia'
 
 const windowsStore = useWindowsStore()
+
+const { desktopApps } = storeToRefs(windowsStore)
 
 const gridContainer = ref()
 
@@ -67,8 +70,8 @@ onBeforeUnmount(() => {
 })
 
 // 验证更新数据是否正确
-watch(layout, () => {
-  // console.log('数据更新', layout.value)
+watch(desktopApps, () => {
+  calculateGridSize()
 }, { deep: true })
 
 const draggableStart = (id: string) => {

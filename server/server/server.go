@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/MR5356/tos/config"
+	"github.com/MR5356/tos/module/application"
 	"github.com/MR5356/tos/module/storage"
 	"github.com/MR5356/tos/module/system"
 	"github.com/MR5356/tos/module/terminal"
@@ -71,6 +72,7 @@ func New(cfg *config.Config) (server *Server, err error) {
 	services := []Service{
 		system.GetService(),
 		storage.GetService(),
+		application.GetService(),
 	}
 
 	// controllers
@@ -78,6 +80,7 @@ func New(cfg *config.Config) (server *Server, err error) {
 		terminal.NewController(),
 		system.NewController(),
 		storage.NewController(),
+		application.NewController(),
 	}
 
 	// initialize

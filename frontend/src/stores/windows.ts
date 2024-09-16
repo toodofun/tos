@@ -2,6 +2,7 @@ import { ref, h, defineAsyncComponent, type VNode } from 'vue'
 import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
 import { useDockStore } from '@/stores/dock'
+import axios from '@/utils/request'
 
 export const defaultBackground = 'white'
 
@@ -32,6 +33,12 @@ export interface CreateNewWindowInfo {
   theme?: 'light' | 'dark'
   background?: string
   singleton?: boolean
+  fixOnDock?: boolean
+  fixOnDesk?: boolean
+}
+
+const listApplications = async (): Promise<CreateNewWindowInfo[]> => {
+  return axios.get('/application/list')
 }
 
 const internalApps: { [key: string]: VNode } = {
@@ -64,47 +71,11 @@ export const useWindowsStore = defineStore('windows', () => {
     const restoreFunctionMap: { [key: string]: () => void } = {}
     const dockStore = useDockStore()
 
+    const allApps = ref<Array<CreateNewWindowInfo>>([])
+
     // Dock
     const fixedApps = ref<Array<CreateNewWindowInfo>>([
-      { icon: 'internal://icon-oss', title: '文件', page: 'internal://finder' },
-      {
-        icon: 'internal://icon-app',
-        title: '启动台',
-        page: 'system://launchpad',
-        background: 'linear-gradient(to right, #4e54c8, #8f94fb)'
-      },
-      {
-        icon: 'internal://icon-terminal',
-        title: '终端',
-        page: 'internal://terminal',
-        theme: 'dark'
-      },
-      {
-        icon: 'internal://icon-app-store',
-        title: '应用商店',
-        page: 'internal://app-store',
-        background: 'linear-gradient(to right, #06beb6, #48b1bf)',
-        singleton: true
-      },
-      {
-        icon: 'internal://icon-setting',
-        title: '设置',
-        page: 'internal://setting',
-        background: 'linear-gradient(to right, #536976, #292e49)',
-        singleton: true
-      }
-      // { icon: 'internal://icon-task', title: '任务管理', page: '//toodo.fun' },
-    ])
-    const minimizedApps = ref<Array<WindowInfo>>([])
-
-    const desktopApps = ref<Array<CreateNewWindowInfo>>([
-      {
-        icon: 'https://i04piccdn.sogoucdn.com/a72804451f0e9825',
-        title: '原神',
-        width: 1280,
-        height: 720,
-        page: 'https://genshin.titlecan.cn/'
-      },
+      // { icon: 'internal://icon-oss', title: '文件', page: 'internal://finder' },
       // {
       //   icon: 'internal://icon-app',
       //   title: '启动台',
@@ -112,43 +83,91 @@ export const useWindowsStore = defineStore('windows', () => {
       //   background: 'linear-gradient(to right, #4e54c8, #8f94fb)'
       // },
       // {
-      //   icon: 'https://hexgl.bkcore.com/play/css/title.png',
-      //   title: 'HexGL赛车',
-      //   width: 1280,
-      //   height: 720,
-      //   page: 'https://hexgl.bkcore.com/play/'
-      // },
-      // {
-      //   icon: 'https://th.bing.com/th/id/OIP.nfFu7l8TPI6fnX5Fb8bJ_QHaHa?rs=1&pid=ImgDetMain',
-      //   title: '亲戚称呼计算器',
-      //   width: 338,
-      //   height: 600,
-      //   page: 'https://passer-by.com/relationship/vue/#/',
+      //   icon: 'internal://icon-terminal',
+      //   title: '终端',
+      //   page: 'internal://terminal',
       //   theme: 'dark'
       // },
-      {
-        icon: 'internal://icon-app-store',
-        title: '应用商店',
-        page: 'internal://app-store',
-        background: 'linear-gradient(to right, #06beb6, #48b1bf)',
-        singleton: true
-      },
-      {
-        icon: 'internal://icon-terminal',
-        title: '终端',
-        page: 'internal://terminal',
-        theme: 'dark'
-      },
-      {
-        icon: 'internal://icon-setting',
-        title: '设置',
-        page: 'internal://setting',
-        background: 'linear-gradient(to right, #536976, #292e49)',
-        singleton: true
-      }
+      // {
+      //   icon: 'internal://icon-app-store',
+      //   title: '应用商店',
+      //   page: 'internal://app-store',
+      //   background: 'linear-gradient(to right, #06beb6, #48b1bf)',
+      //   singleton: true
+      // },
+      // {
+      //   icon: 'internal://icon-setting',
+      //   title: '设置',
+      //   page: 'internal://setting',
+      //   background: 'linear-gradient(to right, #536976, #292e49)',
+      //   singleton: true
+      // }
+      // // { icon: 'internal://icon-task', title: '任务管理', page: '//toodo.fun' },
+    ])
+    const minimizedApps = ref<Array<WindowInfo>>([])
+
+    const desktopApps = ref<Array<CreateNewWindowInfo>>([
+      // {
+      //   icon: 'https://i04piccdn.sogoucdn.com/a72804451f0e9825',
+      //   title: '原神',
+      //   width: 1280,
+      //   height: 720,
+      //   page: 'https://genshin.titlecan.cn/'
+      // },
+      // // {
+      // //   icon: 'internal://icon-app',
+      // //   title: '启动台',
+      // //   page: 'system://launchpad',
+      // //   background: 'linear-gradient(to right, #4e54c8, #8f94fb)'
+      // // },
+      // // {
+      // //   icon: 'https://hexgl.bkcore.com/play/css/title.png',
+      // //   title: 'HexGL赛车',
+      // //   width: 1280,
+      // //   height: 720,
+      // //   page: 'https://hexgl.bkcore.com/play/'
+      // // },
+      // // {
+      // //   icon: 'https://th.bing.com/th/id/OIP.nfFu7l8TPI6fnX5Fb8bJ_QHaHa?rs=1&pid=ImgDetMain',
+      // //   title: '亲戚称呼计算器',
+      // //   width: 338,
+      // //   height: 600,
+      // //   page: 'https://passer-by.com/relationship/vue/#/',
+      // //   theme: 'dark'
+      // // },
+      // {
+      //   icon: 'internal://icon-app-store',
+      //   title: '应用商店',
+      //   page: 'internal://app-store',
+      //   background: 'linear-gradient(to right, #06beb6, #48b1bf)',
+      //   singleton: true
+      // },
+      // {
+      //   icon: 'internal://icon-terminal',
+      //   title: '终端',
+      //   page: 'internal://terminal',
+      //   theme: 'dark'
+      // },
+      // {
+      //   icon: 'internal://icon-setting',
+      //   title: '设置',
+      //   page: 'internal://setting',
+      //   background: 'linear-gradient(to right, #536976, #292e49)',
+      //   singleton: true
+      // }
       // { icon: 'internal://icon-container', title: '容器管理', page: '//toodo.fun' },
       // { icon: 'internal://icon-cluster', title: '集群管理', page: '//toodo.fun', theme: 'dark' },
     ])
+
+    listApplications()
+      .then(res => {
+        allApps.value = res
+        fixedApps.value = res.filter(i => i.fixOnDock)
+        desktopApps.value = res.filter(i => i.fixOnDesk)
+      })
+      .catch(e => {
+        console.log(e)
+      })
 
     function clickWindow(w: WindowInfo) {
       maxZ.value += 1
@@ -226,6 +245,7 @@ export const useWindowsStore = defineStore('windows', () => {
     }
 
     return {
+      allApps,
       windowList,
       maxZ,
       fixedApps,
