@@ -3,8 +3,9 @@ import { type FileInfo, getFileIcon } from '@/views/finder/FinderView'
 import type { PropType } from 'vue'
 import IconView from '@/components/operating-system/IconView.vue'
 import dayjs from 'dayjs'
+import ContextMenu from '@imengyu/vue3-context-menu'
 
-defineProps({
+const props = defineProps({
   items: {
     type: Array as PropType<FileInfo[]>,
     required: true
@@ -21,6 +22,10 @@ defineProps({
     type: Array as PropType<FileInfo[]>,
     required: false,
     default: () => []
+  },
+  onContextMenu: {
+    type: Function as PropType<(e: MouseEvent, file: FileInfo) => void>,
+    required: true
   }
 })
 </script>
@@ -33,6 +38,7 @@ defineProps({
            @dblclick="onDoubleClick(item)"
            @click="onDoubleClick(item)"
            @mouseenter="onClick(item)"
+           @contextmenu="(e: MouseEvent) => {onContextMenu(e, item)}"
       >
         <div class="aspect-square">
           <IconView :src="getFileIcon(item)" custom-class="text-5xl" />

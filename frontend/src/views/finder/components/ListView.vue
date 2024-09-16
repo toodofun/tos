@@ -6,7 +6,7 @@ import numeral from 'numeral'
 import dayjs from 'dayjs'
 import type { TableColumnData, TableData } from '@arco-design/web-vue'
 
-defineProps({
+const props = defineProps({
   items: {
     type: Array as PropType<FileInfo[]>,
     required: true
@@ -23,6 +23,10 @@ defineProps({
     type: Array as PropType<FileInfo[]>,
     required: false,
     default: () => []
+  },
+  onContextMenu: {
+    type: Function as PropType<(e: MouseEvent, file: FileInfo) => void>,
+    required: true
   }
 })
 
@@ -31,7 +35,12 @@ const columns = reactive<TableColumnData[]>([
     title: '名称',
     dataIndex: 'name',
     render: (data: { record: TableData; column: TableColumnData; rowIndex: number; }) => {
-      return h('div', { class: 'flex items-center gap-1 cursor-pointer' }, [
+      return h('div', {
+        class: 'flex items-center gap-1 cursor-pointer',
+        onContextmenu: (e: MouseEvent) => {
+          props.onContextMenu(e, data.record as FileInfo)
+        }
+      }, [
         h('div', { class: 'w-6 h-6' }, [
           h(IconView, { src: getFileIcon(data.record as FileInfo) })
         ]),

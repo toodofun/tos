@@ -85,6 +85,14 @@ func (s *Service) Upload(id uuid.UUID, fileName string, fileContent io.Reader, t
 	return sm.Upload(fileName, fileContent, targetPath)
 }
 
+func (s *Service) Download(id uuid.UUID, filePath string) (string, io.ReadCloser, error) {
+	sm, err := s.GetStorageManager(id)
+	if err != nil {
+		return "", nil, err
+	}
+	return sm.Download(filePath)
+}
+
 func (s *Service) Exists(id uuid.UUID, filePath string) bool {
 	sm, err := s.GetStorageManager(id)
 	if err != nil {
@@ -100,6 +108,15 @@ func (s *Service) GetSpecialPath(id uuid.UUID) []*storagemanager.FileInfo {
 		return nil
 	}
 	return sm.GetSpecialPath()
+}
+
+func (s *Service) Delete(id uuid.UUID, filePath string) error {
+	sm, err := s.GetStorageManager(id)
+	if err != nil {
+		return err
+	}
+
+	return sm.Remove(filePath)
 }
 
 func (s *Service) Initialize() error {

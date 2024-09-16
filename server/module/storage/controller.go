@@ -4,6 +4,7 @@ import (
 	"github.com/MR5356/tos/response"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"io"
 	"strings"
 )
 
@@ -94,6 +95,46 @@ func (c *Controller) handleListStorages(ctx *gin.Context) {
 	}
 }
 
+func (c *Controller) handleDownload(ctx *gin.Context) {
+	if id, err := uuid.Parse(ctx.Param("id")); err != nil {
+		response.Error(ctx, response.CodeParamsError)
+	} else {
+		if path := ctx.Query("path"); len(path) > 0 {
+			fileName, fileContent, err := c.service.Download(id, path)
+			if err != nil {
+				response.ErrorWithMsg(ctx, response.CodeParamsError, err.Error())
+			} else {
+				ctx.Header("Content-Disposition", "attachment; filename="+fileName)
+				ctx.Header("Content-Type", "application/octet-stream")
+				ctx.Header("Content-Transfer-Encoding", "binary")
+
+				_, err = io.Copy(ctx.Writer, fileContent)
+				if err != nil {
+					response.ErrorWithMsg(ctx, response.CodeParamsError, err.Error())
+				}
+			}
+		} else {
+			response.Error(ctx, response.CodeParamsError)
+		}
+	}
+}
+
+func (c *Controller) handleDelete(ctx *gin.Context) {
+	if id, err := uuid.Parse(ctx.Param("id")); err != nil {
+		response.Error(ctx, response.CodeParamsError)
+	} else {
+		if path := ctx.Query("path"); len(path) > 0 {
+			if err := c.service.Delete(id, path); err != nil {
+				response.ErrorWithMsg(ctx, response.CodeParamsError, err.Error())
+			} else {
+				response.Success(ctx, nil)
+			}
+		} else {
+			response.Error(ctx, response.CodeParamsError)
+		}
+	}
+}
+
 func (c *Controller) RegisterRoute(group *gin.RouterGroup) {
 	api := group.Group("/storage")
 	// 获取存储列表
@@ -104,4 +145,6 @@ func (c *Controller) RegisterRoute(group *gin.RouterGroup) {
 	api.GET("/:id/folder", c.handleListDirectory)
 	api.GET("/:id/sp", c.handleGetSpecialPath)
 	api.GET("/:id/exists", c.handleExists)
+	api.GET("/:id/download", c.handleDownload)
+	api.DELETE("/:id/delete", c.handleDelete)
 }

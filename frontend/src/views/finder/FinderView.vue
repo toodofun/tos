@@ -5,7 +5,7 @@ import {
   listDirectory,
   onUploadFile,
   getSP,
-  listStorages
+  listStorages, downloadFile, deleteFile
 } from '@/views/finder/FinderView'
 import {
   ref,
@@ -29,6 +29,7 @@ import { Modal, type RequestOption, type UploadRequest } from '@arco-design/web-
 import eventBus from '@/plugins/eventBus'
 import GridView from '@/views/finder/components/GridView.vue'
 import ListView from '@/views/finder/components/ListView.vue'
+import ContextMenu from '@imengyu/vue3-context-menu'
 
 const queueStore = useQueueStore()
 
@@ -133,6 +134,16 @@ const onClick = (item: FileInfo) => {
   selectedInfo.value = [item]
 }
 
+const onDownload = (item: FileInfo) => {
+  if (item.isDir) return
+  downloadFile(storageId.value, item.path)
+}
+
+const onDelete = async (item: FileInfo) => {
+  await deleteFile(storageId.value, item.path)
+  await getData()
+}
+
 // 前往上一个路径
 const onClickPrePath = () => {
   if (currentIndex.value > 0) {
@@ -191,6 +202,40 @@ const handleUploadModeOverwrite = (option: RequestOption): UploadRequest => {
     eventBus.emit('finder-refresh', initialPath)
   })
   return {}
+}
+
+const onContextMenu = (e: MouseEvent, item: FileInfo) => {
+  //prevent the browser's default menu
+  e.preventDefault()
+  //show your menu
+  ContextMenu.showContextMenu({
+    x: e.x,
+    y: e.y,
+    items: [
+      (item.isDir ? {
+        label: '打开目录',
+        onClick: () => {
+          onDoubleClick(item)
+        }
+      } : {
+        label: '下载',
+        onClick: () => {
+          onDownload(item)
+        }
+      }),
+      (item.isDir ? {
+        label: '删除目录',
+        onClick: () => {
+          onDelete(item)
+        }
+      } : {
+        label: '删除文件',
+        onClick: () => {
+          onDelete(item)
+        }
+      })
+    ]
+  })
 }
 
 init()
@@ -254,28 +299,28 @@ init()
             </a-breadcrumb-item>
           </a-breadcrumb>
           <a-button-group size="small" rounded :disabled="loading">
-            <a-dropdown :popup-max-height="false" position="bl">
-              <a-button>
-                <div class="flex gap-1 items-center">
-                  <div class="text-sm">新增</div>
-                  <icon-caret-down size="mini" />
-                </div>
-              </a-button>
-              <template #content>
-                <!--                <a-doption>-->
-                <!--                  <div class="flex items-center gap-1">-->
-                <!--                    <icon-folder-add />-->
-                <!--                    <div>新建文件</div>-->
-                <!--                  </div>-->
-                <!--                </a-doption>-->
-                <a-doption>
-                  <div class="flex items-center gap-1">
-                    <icon-folder-add />
-                    <div>新建文件夹</div>
-                  </div>
-                </a-doption>
-              </template>
-            </a-dropdown>
+            <!--            <a-dropdown :popup-max-height="false" position="bl">-->
+            <!--              <a-button>-->
+            <!--                <div class="flex gap-1 items-center">-->
+            <!--                  <div class="text-sm">新增</div>-->
+            <!--                  <icon-caret-down size="mini" />-->
+            <!--                </div>-->
+            <!--              </a-button>-->
+            <!--              <template #content>-->
+            <!--                &lt;!&ndash;                <a-doption>&ndash;&gt;-->
+            <!--                &lt;!&ndash;                  <div class="flex items-center gap-1">&ndash;&gt;-->
+            <!--                &lt;!&ndash;                    <icon-folder-add />&ndash;&gt;-->
+            <!--                &lt;!&ndash;                    <div>新建文件</div>&ndash;&gt;-->
+            <!--                &lt;!&ndash;                  </div>&ndash;&gt;-->
+            <!--                &lt;!&ndash;                </a-doption>&ndash;&gt;-->
+            <!--                <a-doption>-->
+            <!--                  <div class="flex items-center gap-1">-->
+            <!--                    <icon-folder-add />-->
+            <!--                    <div>新建文件夹</div>-->
+            <!--                  </div>-->
+            <!--                </a-doption>-->
+            <!--              </template>-->
+            <!--            </a-dropdown>-->
             <a-dropdown :popup-max-height="false" position="bl">
               <a-button>
                 <div class="flex gap-1 items-center">
@@ -360,9 +405,20 @@ init()
       <a-layout-content class="w-full relative overflow-y-auto">
         <a-spin :loading="loading">
           <div v-if="files.length > 0">
-            <ListView v-if="showInList" :on-click="onClick" :on-double-click="onDoubleClick" :items="files" />
-            <GridView v-else :on-click="onClick" :on-double-click="onDoubleClick" :selected-info="selectedInfo"
-                      :items="files" />
+            <ListView
+              v-if="showInList"
+              :on-click="onClick"
+              :on-double-click="onDoubleClick"
+              :items="files"
+              :on-context-menu="onContextMenu"
+            />
+            <GridView
+              v-else
+              :on-click="onClick"
+              :on-double-click="onDoubleClick" :selected-info="selectedInfo"
+              :on-context-menu="onContextMenu"
+              :items="files"
+            />
           </div>
           <div v-else class="absolute inset-0 flex items-center justify-center z-0">
             <a-empty description="暂无文件" />

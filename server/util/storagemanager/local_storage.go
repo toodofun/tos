@@ -101,11 +101,27 @@ func (lfm *LocalStorage) Download(filePath string) (string, io.ReadCloser, error
 		return "", nil, err
 	}
 
-	if file, err := os.Open(filePath); err != nil {
+	// 打开文件
+	file, err := os.Open(filePath)
+	if err != nil {
 		return "", nil, err
-	} else {
-		return filepath.Base(filePath), file, nil
 	}
+
+	// 确保文件在 root 目录下存在
+	stat, err := file.Stat()
+	if err != nil {
+		_ = file.Close()
+		return "", nil, err
+	}
+
+	// 确保不是目录
+	if stat.IsDir() {
+		_ = file.Close()
+		return "", nil, errors.New("cannot download a directory")
+	}
+
+	// 返回文件名和文件读取流
+	return filepath.Base(filePath), file, nil
 }
 
 func (lfm *LocalStorage) GetFileInfo(filePath string) (*FileInfo, error) {

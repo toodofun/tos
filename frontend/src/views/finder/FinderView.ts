@@ -18,7 +18,7 @@ export interface Storage {
   updatedAt: Date;
 }
 
-export const listStorages = async(): Promise<Storage[]> => {
+export const listStorages = async (): Promise<Storage[]> => {
   return axios.get(`/storage/list`)
 }
 
@@ -32,6 +32,14 @@ export const getSP = async (id: string): Promise<FileInfo[]> => {
 
 export const fileOriDirExists = async (id: string, path: string): Promise<boolean> => {
   return axios.get(`/storage/${id}/exists?path=${path}`)
+}
+
+export const deleteFile = async (id: string, path: string) => {
+  return axios.delete(`/storage/${id}/delete?path=${path}`)
+}
+
+export const downloadFile = async (id: string, path: string) => {
+  window.open(`/api/v1/storage/${id}/download?path=${path}`, '_blank')
 }
 
 export const onUploadFile = async (id: string, option: any, targetPath: string, mode: 'overwrite' | 'ignore') => {
