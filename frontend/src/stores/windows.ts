@@ -75,34 +75,7 @@ export const useWindowsStore = defineStore('windows', () => {
 
     // Dock
     const fixedApps = ref<Array<CreateNewWindowInfo>>([
-      // { icon: 'internal://icon-oss', title: '文件', page: 'internal://finder' },
-      // {
-      //   icon: 'internal://icon-app',
-      //   title: '启动台',
-      //   page: 'system://launchpad',
-      //   background: 'linear-gradient(to right, #4e54c8, #8f94fb)'
-      // },
-      // {
-      //   icon: 'internal://icon-terminal',
-      //   title: '终端',
-      //   page: 'internal://terminal',
-      //   theme: 'dark'
-      // },
-      // {
-      //   icon: 'internal://icon-app-store',
-      //   title: '应用商店',
-      //   page: 'internal://app-store',
-      //   background: 'linear-gradient(to right, #06beb6, #48b1bf)',
-      //   singleton: true
-      // },
-      // {
-      //   icon: 'internal://icon-setting',
-      //   title: '设置',
-      //   page: 'internal://setting',
-      //   background: 'linear-gradient(to right, #536976, #292e49)',
-      //   singleton: true
-      // }
-      // // { icon: 'internal://icon-task', title: '任务管理', page: '//toodo.fun' },
+      // { icon: 'internal://icon-task', title: '任务管理', page: '//toodo.fun' },
     ])
     const minimizedApps = ref<Array<WindowInfo>>([])
 
@@ -114,12 +87,6 @@ export const useWindowsStore = defineStore('windows', () => {
       //   height: 720,
       //   page: 'https://genshin.titlecan.cn/'
       // },
-      // // {
-      // //   icon: 'internal://icon-app',
-      // //   title: '启动台',
-      // //   page: 'system://launchpad',
-      // //   background: 'linear-gradient(to right, #4e54c8, #8f94fb)'
-      // // },
       // // {
       // //   icon: 'https://hexgl.bkcore.com/play/css/title.png',
       // //   title: 'HexGL赛车',
@@ -135,26 +102,6 @@ export const useWindowsStore = defineStore('windows', () => {
       // //   page: 'https://passer-by.com/relationship/vue/#/',
       // //   theme: 'dark'
       // // },
-      // {
-      //   icon: 'internal://icon-app-store',
-      //   title: '应用商店',
-      //   page: 'internal://app-store',
-      //   background: 'linear-gradient(to right, #06beb6, #48b1bf)',
-      //   singleton: true
-      // },
-      // {
-      //   icon: 'internal://icon-terminal',
-      //   title: '终端',
-      //   page: 'internal://terminal',
-      //   theme: 'dark'
-      // },
-      // {
-      //   icon: 'internal://icon-setting',
-      //   title: '设置',
-      //   page: 'internal://setting',
-      //   background: 'linear-gradient(to right, #536976, #292e49)',
-      //   singleton: true
-      // }
       // { icon: 'internal://icon-container', title: '容器管理', page: '//toodo.fun' },
       // { icon: 'internal://icon-cluster', title: '集群管理', page: '//toodo.fun', theme: 'dark' },
     ])

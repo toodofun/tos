@@ -2,6 +2,7 @@ import axios from '@/utils/request'
 import type { AxiosProgressEvent } from 'axios'
 
 export interface FileInfo {
+  id: string;
   name: string;
   path: string;
   size: number;
@@ -98,8 +99,10 @@ export const getFileIcon = (file: FileInfo): string => {
     case '.go':
       return 'internal://icon-finder-code'
     case '.jpg':
-    case '.svg':
+    case '.jpeg':
     case '.png':
+      return `/api/v1/storage/${file.id}/download?path=${file.path}`
+    case '.svg':
       return 'internal://icon-finder-image'
     case '.7z':
     case '.tar.gz':
@@ -188,4 +191,3 @@ function getFullFileExtension(filename: string): string {
 
   return '.' + extension
 }
-

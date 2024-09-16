@@ -138,11 +138,11 @@ const onClick = (item: FileInfo) => {
 
 const onDownload = (item: FileInfo) => {
   if (item.isDir) return
-  downloadFile(storageId.value, item.path)
+  downloadFile(item.id, item.path)
 }
 
 const onDelete = async (item: FileInfo) => {
-  await deleteFile(storageId.value, item.path)
+  await deleteFile(item.id, item.path)
   await getData()
 }
 

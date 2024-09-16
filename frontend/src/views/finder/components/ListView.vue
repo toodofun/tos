@@ -42,7 +42,7 @@ const columns = reactive<TableColumnData[]>([
         }
       }, [
         h('div', { class: 'w-6 h-6' }, [
-          h(IconView, { src: getFileIcon(data.record as FileInfo) })
+          h(IconView, { src: getFileIcon(data.record as FileInfo), preview: true, customClass: 'text-xl w-4 h-4' })
         ]),
         h('div', data.record.name)
       ])

@@ -64,12 +64,27 @@ func (s *Service) ListStorages() ([]*Storage, error) {
 	return res, nil
 }
 
-func (s *Service) ListDirectory(id uuid.UUID, directoryPath string) ([]*storagemanager.FileInfo, error) {
+func (s *Service) ListDirectory(id uuid.UUID, directoryPath string) ([]*FileInfo, error) {
 	sm, err := s.GetStorageManager(id)
 	if err != nil {
 		return nil, err
 	}
-	return sm.ListDirectory(directoryPath)
+	res := make([]*FileInfo, 0)
+	fi, err := sm.ListDirectory(directoryPath)
+	if err != nil {
+		return nil, err
+	}
+	for _, f := range fi {
+		res = append(res, &FileInfo{
+			ID:      id,
+			Name:    f.Name,
+			Path:    f.Path,
+			Size:    f.Size,
+			IsDir:   f.IsDir,
+			ModTime: f.ModTime,
+		})
+	}
+	return res, nil
 }
 
 func (s *Service) Upload(id uuid.UUID, fileName string, fileContent io.Reader, targetPath string, mode string) error {
@@ -102,12 +117,26 @@ func (s *Service) Exists(id uuid.UUID, filePath string) bool {
 	return sm.Exists(filePath)
 }
 
-func (s *Service) GetSpecialPath(id uuid.UUID) []*storagemanager.FileInfo {
+func (s *Service) GetSpecialPath(id uuid.UUID) []*FileInfo {
 	sm, err := s.GetStorageManager(id)
 	if err != nil {
 		return nil
 	}
-	return sm.GetSpecialPath()
+
+	res := make([]*FileInfo, 0)
+
+	sps := sm.GetSpecialPath()
+	for _, sp := range sps {
+		res = append(res, &FileInfo{
+			ID:      id,
+			Name:    sp.Name,
+			Path:    sp.Path,
+			Size:    sp.Size,
+			IsDir:   sp.IsDir,
+			ModTime: sp.ModTime,
+		})
+	}
+	return res
 }
 
 func (s *Service) Delete(id uuid.UUID, filePath string) error {

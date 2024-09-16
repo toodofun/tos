@@ -8,6 +8,10 @@ defineProps({
   customClass: {
     type: String,
     required: false
+  },
+  preview: {
+    type: Boolean,
+    default: false
   }
 })
 </script>
@@ -17,7 +21,9 @@ defineProps({
        class="w-full h-full flex items-center justify-center iconfont"
        :class="src.replace('internal://', '') + ' ' + customClass"
   ></div>
-  <a-image v-else width="100%" height="100%" :src="src" :preview="false" alt="" fit="cover" />
+  <div v-else class="w-full h-full rounded overflow-hidden" :class="customClass">
+    <a-image width="100%" height="100%" :src="src" :preview="preview" alt="" fit="cover" />
+  </div>
 </template>
 
 <style scoped>
