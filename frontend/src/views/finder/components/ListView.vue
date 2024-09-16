@@ -54,7 +54,12 @@ const columns = reactive<TableColumnData[]>([
     width: 106,
     minWidth: 88,
     render: (data: { record: TableData; column: TableColumnData; rowIndex: number; }) => {
-      return h('div', { class: 'cursor-pointer' }, numeral(data.record.size).format('0.[00] ib'))
+      return h('div', {
+        class: 'cursor-pointer',
+        onContextmenu: (e: MouseEvent) => {
+          props.onContextMenu(e, data.record as FileInfo)
+        }
+      }, numeral(data.record.size).format('0.[00] ib'))
     }
   },
   {
@@ -63,7 +68,12 @@ const columns = reactive<TableColumnData[]>([
     width: 180,
     minWidth: 80,
     render: (data: { record: TableData; column: TableColumnData; rowIndex: number; }) => {
-      return h('div', { class: 'cursor-pointer' }, dayjs(data.record.modTime).format('YYYY-MM-DD HH:mm:ss'))
+      return h('div', {
+        class: 'cursor-pointer',
+        onContextmenu: (e: MouseEvent) => {
+          props.onContextMenu(e, data.record as FileInfo)
+        }
+      }, dayjs(data.record.modTime).format('YYYY-MM-DD HH:mm:ss'))
     }
   }
 ])

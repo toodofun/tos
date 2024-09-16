@@ -30,8 +30,11 @@ import eventBus from '@/plugins/eventBus'
 import GridView from '@/views/finder/components/GridView.vue'
 import ListView from '@/views/finder/components/ListView.vue'
 import ContextMenu from '@imengyu/vue3-context-menu'
+import { useFinderStore } from '@/stores/finder'
 
 const queueStore = useQueueStore()
+
+const finderStore = useFinderStore()
 
 eventBus.on('finder-refresh', (path) => {
   const p = path as string
@@ -40,7 +43,6 @@ eventBus.on('finder-refresh', (path) => {
   }
 })
 
-const showInList = ref(false)
 const storages = ref<Storage[]>([])
 const storageId = ref('')
 const sp = ref<FileInfo[]>([])
@@ -173,7 +175,7 @@ const canGoForward = computed(() => {
 })
 
 const switchShowInList = () => {
-  showInList.value = !showInList.value
+  finderStore.setShowInList(!finderStore.showInList)
 }
 
 const handleUploadModeIgnore = (option: RequestOption): UploadRequest => {
@@ -393,7 +395,7 @@ init()
             </a-dropdown>
           </a-button-group>
           <a-button-group size="small" rounded>
-            <a-button v-if="showInList" @click="switchShowInList">
+            <a-button v-if="finderStore.showInList" @click="switchShowInList">
               <icon-list size="mini" />
             </a-button>
             <a-button v-else @click="switchShowInList">
@@ -406,7 +408,7 @@ init()
         <a-spin :loading="loading">
           <div v-if="files.length > 0">
             <ListView
-              v-if="showInList"
+              v-if="finderStore.showInList"
               :on-click="onClick"
               :on-double-click="onDoubleClick"
               :items="files"
