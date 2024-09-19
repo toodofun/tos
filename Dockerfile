@@ -37,6 +37,9 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     apk add --no-cache ca-certificates bash
 
 RUN addgroup -S tos && adduser -S tos -G tos
+
+RUN chown -R tos:tos /app
+
 USER tos
 
 COPY --from=go-builder /build/bin/tos /app/

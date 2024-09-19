@@ -40,8 +40,8 @@ const props = defineProps({
            @mouseenter="onClick(item)"
            @contextmenu="(e: MouseEvent) => {onContextMenu(e, item)}"
       >
-        <div class="aspect-square">
-          <IconView :src="getFileIcon(item)" custom-class="text-7xl w-16 h-16" preview />
+        <div class="h-full w-full">
+          <IconView :src="getFileIcon(item)" custom-class="text-7xl w-full aspect-video" preview />
         </div>
         <div class="flex flex-col items-center gap-1">
           <div class="text-xs text-wrap text-center max-w-20 truncate text-ellipsis break-words line-clamp-2">
