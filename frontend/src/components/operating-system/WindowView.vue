@@ -44,7 +44,7 @@
             </a-button>
           </div>
         </div>
-        <div class="w-full h-full relative bg-[#f8f8f8]">
+        <div class="w-full h-full relative bg-[#f8f8f8]" @mousedown="(e) => {e.stopPropagation()}">
           <component :is="windowsStore.getWindow(page)" />
           <!--          <iframe v-if="typeof page === 'string'" :src="page" class="w-full h-full will-change-auto"-->
           <!--                  allow="camera;microphone;clipboard-write;clipboard-read;"-->
@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, type VNode, type PropType } from 'vue'
+import { ref, nextTick } from 'vue'
 import { useWindowsStore } from '@/stores/windows'
 
 import gsap from 'gsap'

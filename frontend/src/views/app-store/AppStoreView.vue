@@ -12,6 +12,7 @@ const images = [
 <template>
   <a-layout class="absolute inset-0 select-none">
     <a-layout-sider class="p-2 box-border">
+      <a-input :style="{width:'320px'}" placeholder="Please enter something" allow-clear />
       <a-input-search placeholder="搜索应用"></a-input-search>
       <a-menu
       >

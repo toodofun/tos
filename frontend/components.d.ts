@@ -19,6 +19,7 @@ declare module 'vue' {
     ADropdown: typeof import('@arco-design/web-vue')['Dropdown']
     AEmpty: typeof import('@arco-design/web-vue')['Empty']
     AImage: typeof import('@arco-design/web-vue')['Image']
+    AInput: typeof import('@arco-design/web-vue')['Input']
     AInputSearch: typeof import('@arco-design/web-vue')['InputSearch']
     ALayout: typeof import('@arco-design/web-vue')['Layout']
     ALayoutContent: typeof import('@arco-design/web-vue')['LayoutContent']

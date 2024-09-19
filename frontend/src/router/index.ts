@@ -35,6 +35,11 @@ const router = createRouter({
           path: 'finder',
           name: 'finder',
           component: () => import('../views/finder/FinderView.vue')
+        },
+        {
+          path: 'app-store',
+          name: 'app-store',
+          component: () => import('../views/app-store/AppStoreView.vue')
         }
       ]
     }
