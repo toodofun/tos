@@ -159,6 +159,7 @@ const disableDraggable = () => {
 const toggleMinimize = () => {
   isMinimized.value = !isMinimized.value
   if (isMinimized.value) {
+    dockStore.setShowDock(true)
     preState.value = {
       w: width.value,
       h: height.value,
@@ -169,6 +170,9 @@ const toggleMinimize = () => {
       toggleMinimize()
     })
   } else {
+    if (isFullscreen.value) {
+      dockStore.setShowDock(false)
+    }
     nextTick(() => {
       width.value = preState.value.w as number
       height.value = preState.value.h as number
