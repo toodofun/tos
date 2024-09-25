@@ -46,7 +46,6 @@ declare module 'vue' {
     DesktopView: typeof import('./src/components/operating-system/DesktopView.vue')['default']
     DockView: typeof import('./src/components/operating-system/DockView.vue')['default']
     DynamicBackground: typeof import('./src/components/operating-system/components/DynamicBackground.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     IconCommunity: typeof import('./src/components/icons/IconCommunity.vue')['default']
     IconDocumentation: typeof import('./src/components/icons/IconDocumentation.vue')['default']
     IconEcosystem: typeof import('./src/components/icons/IconEcosystem.vue')['default']
@@ -63,7 +62,6 @@ declare module 'vue' {
     TheWelcome: typeof import('./src/components/TheWelcome.vue')['default']
     UserView: typeof import('./src/components/UserView.vue')['default']
     VueDragResize: typeof import('./src/components/VueDragResize.vue')['default']
-    WelcomeItem: typeof import('./src/components/WelcomeItem.vue')['default']
     WindowsManager: typeof import('./src/components/operating-system/WindowsManager.vue')['default']
     WindowView: typeof import('./src/components/operating-system/WindowView.vue')['default']
   }

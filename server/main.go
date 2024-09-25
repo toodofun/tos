@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/MR5356/tos/config"
 	"github.com/MR5356/tos/constant"
+	_ "github.com/MR5356/tos/log"
 	"github.com/MR5356/tos/server"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"

@@ -4,6 +4,7 @@ go 1.23.0
 
 require (
 	github.com/MR5356/aurora v0.0.8
+	github.com/antonfisher/nested-logrus-formatter v1.3.1
 	github.com/avast/retry-go v3.0.0+incompatible
 	github.com/creack/pty v1.1.9
 	github.com/gin-contrib/gzip v1.0.1
