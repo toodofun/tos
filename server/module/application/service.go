@@ -17,15 +17,15 @@ func (s *Service) ListApps() ([]*App, error) {
 }
 
 func (s *Service) Initialize() error {
-	if err := s.db.DB.AutoMigrate(&App{}); err != nil {
-		return err
-	}
-
-	for _, app := range defaultApps {
-		if err := s.db.DB.FirstOrCreate(app).Error; err != nil {
-			return err
-		}
-	}
+	//if err := s.db.DB.AutoMigrate(&App{}); err != nil {
+	//	return err
+	//}
+	//
+	//for _, app := range defaultApps {
+	//	if err := s.db.DB.FirstOrCreate(app).Error; err != nil {
+	//		return err
+	//	}
+	//}
 
 	return nil
 }

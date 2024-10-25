@@ -13,6 +13,8 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"sync"
+	"time"
 )
 
 type Controller struct {
@@ -23,10 +25,12 @@ func NewController() *Controller {
 }
 
 type LocalSession struct {
-	pty    *os.File // 伪终端文件描述符
+	pty    *os.File
 	stdin  io.WriteCloser
 	stdout io.Reader
 	stderr io.Reader
+	cmd    *exec.Cmd
+	wg     sync.WaitGroup
 }
 
 func (l *LocalSession) StdinPipe() (io.WriteCloser, error) {
@@ -50,6 +54,9 @@ func (l *LocalSession) WindowChange(h, w int) error {
 }
 
 func (l *LocalSession) Wait() error {
+	if l.cmd != nil {
+		return l.cmd.Wait()
+	}
 	return nil
 }
 
@@ -65,14 +72,12 @@ func (l *LocalSession) RequestPty(term string, h, w int, modes ssh.TerminalModes
 }
 
 func NewLocalSession() *LocalSession {
-	// 创建伪终端
 	master, slave, err := pty.Open()
 	if err != nil {
 		fmt.Printf("Failed to open pty: %v\n", err)
 		return nil
 	}
 
-	// 执行 shell 程序
 	shell := os.Getenv("SHELL")
 	if shell == "" {
 		shell = "/bin/bash"
@@ -85,14 +90,14 @@ func NewLocalSession() *LocalSession {
 
 	cmd := exec.Command(shell)
 	cmd.Dir = homeDir
-
-	// 将子进程的 stdin/stdout/stderr 连接到伪终端
 	cmd.Stdin = slave
 	cmd.Stdout = slave
 	cmd.Stderr = slave
 
 	if err := cmd.Start(); err != nil {
 		fmt.Printf("Failed to start command: %v\n", err)
+		slave.Close()
+		master.Close()
 		return nil
 	}
 
@@ -101,6 +106,7 @@ func NewLocalSession() *LocalSession {
 		stdin:  master,
 		stdout: master,
 		stderr: master,
+		cmd:    cmd,
 	}
 }
 
@@ -127,9 +133,12 @@ func (c *Controller) handleTerminal(ctx *gin.Context) {
 		}
 	}()
 
-	// 创建一个本地 session
-	sshOut := new(terminal.WsBufferWriter)
 	session := NewLocalSession()
+	if session == nil {
+		_ = webConn.WriteMessage(websocket.TextMessage, []byte("Failed to create session"))
+		webConn.Close()
+		return
+	}
 
 	t.Websocket = webConn
 	t.Session = session
@@ -137,30 +146,68 @@ func (c *Controller) handleTerminal(ctx *gin.Context) {
 	stdin, err := session.StdinPipe()
 	if err != nil {
 		_ = webConn.WriteMessage(websocket.TextMessage, []byte(fmt.Sprintf("Error creating stdin pipe: %v", err)))
+		session.Close()
+		webConn.Close()
 		return
 	}
 
 	stdout, err := session.StdoutPipe()
 	if err != nil {
 		_ = webConn.WriteMessage(websocket.TextMessage, []byte(fmt.Sprintf("Error creating stdout pipe: %v", err)))
+		session.Close()
+		webConn.Close()
 		return
 	}
 
 	stderr, err := session.StderrPipe()
 	if err != nil {
 		_ = webConn.WriteMessage(websocket.TextMessage, []byte(fmt.Sprintf("Error creating stderr pipe: %v", err)))
+		session.Close()
+		webConn.Close()
 		return
 	}
 
-	go io.Copy(sshOut, stdout)
-	go io.Copy(sshOut, stderr)
-
+	sshOut := new(terminal.WsBufferWriter)
 	t.Stdin = stdin
 	t.Stdout = sshOut
+
+	// 使用WaitGroup来等待所有goroutine完成
+	var wg sync.WaitGroup
+
+	// 启动输出转发
+	wg.Add(2)
+	go func() {
+		defer wg.Done()
+		io.Copy(sshOut, stdout)
+	}()
+	go func() {
+		defer wg.Done()
+		io.Copy(sshOut, stderr)
+	}()
+
+	// 监听进程退出
+	go func() {
+		// 等待命令执行完成
+		if err := session.cmd.Wait(); err != nil {
+			fmt.Printf("Command finished with error: %v\n", err)
+		}
+
+		// 关闭WebSocket连接
+		_ = webConn.WriteControl(websocket.CloseMessage,
+			websocket.FormatCloseMessage(websocket.CloseNormalClosure, "Process exited"),
+			time.Now().Add(time.Second))
+		webConn.Close()
+
+		// 清理资源
+		session.Close()
+		wg.Wait()
+	}()
 
 	err = session.Start()
 	if err != nil {
 		_ = webConn.WriteMessage(websocket.TextMessage, []byte(fmt.Sprintf("Error starting session: %v", err)))
+		session.Close()
+		webConn.Close()
 		return
 	}
 
@@ -170,6 +217,7 @@ func (c *Controller) handleTerminal(ctx *gin.Context) {
 		}
 		return session.Close()
 	})
+
 	go t.Send2SSH()
 	go t.Send2Web()
 }

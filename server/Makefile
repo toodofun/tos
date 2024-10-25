@@ -15,6 +15,23 @@ GO_BUILD = CGO_ENABLED=0 go build -trimpath -ldflags '-X "$(MODULE_NAME)/constan
 help:  ## Show this help
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-16s\033[0m %s\n", $$1, $$2}'
 
+.PHONY: create-db-migrate
+create-db-migrate:  ## Create db migrate
+	@echo ${db-version}
+	@migrate create -ext sql -dir db/migrations -seq ${db-version}
+
+.PHONY: db-migrate-up
+db-migrate-up:  ## Migrate up
+	@migrate -database sqlite3://tos.db -path db/migrations up
+
+.PHONY: db-migrate-version
+db-migrate-version:  ## Migrate version
+	@migrate -database sqlite3://tos.db -path db/migrations version
+
+.PHONY: db-migrate-down
+db-migrate-down:  ## Migrate down
+	@migrate -database sqlite3://tos.db -path db/migrations down
+
 .PHONY: deps
 deps:  ## Install dependencies
 	@go mod download

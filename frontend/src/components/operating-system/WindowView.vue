@@ -45,7 +45,7 @@
           </div>
         </div>
         <div class="w-full h-full relative bg-[#f8f8f8]" @mousedown="(e) => {e.stopPropagation()}">
-          <component :is="windowsStore.getWindow(page)" />
+          <component :is="windowsStore.getWindow(page, id)" />
           <!--          <iframe v-if="typeof page === 'string'" :src="page" class="w-full h-full will-change-auto"-->
           <!--                  allow="camera;microphone;clipboard-write;clipboard-read;"-->
           <!--                  sandbox="allow-same-origin allow-scripts allow-popups allow-forms"-->

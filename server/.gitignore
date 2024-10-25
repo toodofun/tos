@@ -4,3 +4,4 @@ coverage.out
 server/static
 **/.DS_Store
 .DS_Store
+*.db

@@ -48,19 +48,23 @@ const internalApps: { [key: string]: VNode } = {
   'internal://app-store': h(defineAsyncComponent(() => import('@/views/app-store/AppStoreView.vue')))
 }
 
-export const getWindow = (src: string): VNode => {
+export const getWindow = (src: string, id: string): VNode => {
   if (src.startsWith('internal')) {
-    return internalApps[src] || h('div', 'Not Found')
+    const app = internalApps[src]
+    return app ? h(app, { id }) : h('div', { id }, 'Not Found')
   }
+
   if (src.startsWith('http') || src.startsWith('//')) {
     return h('iframe', {
+      id,
       src,
       class: 'w-full h-full will-change-auto',
       allow: 'camera;microphone;clipboard-write;clipboard-read;',
       sandbox: 'allow-same-origin allow-scripts allow-popups allow-forms'
     })
   }
-  return h('div', 'Not Found')
+
+  return h('div', { id }, 'Not Found')
 }
 
 export const useWindowsStore = defineStore('windows', () => {
